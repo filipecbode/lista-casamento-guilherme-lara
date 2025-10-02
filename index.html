@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Casamento - Guilherme & Lara</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__brand">
+                <h2>💍 Guilherme & Lara</h2>
+            </div>
+            <div class="nav__menu">
+                <button class="btn btn--secondary" id="acessarDashboardBtn">Dashboard dos Noivos</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Página Principal - Lista de Presentes -->
+    <main id="mainPage" class="main-page">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero__content">
+                    <img src="https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=400&h=400&fit=crop&crop=faces" alt="Guilherme & Lara" class="hero__photo">
+                    <div class="hero__text">
+                        <h1>Nossa Lista de Casamento</h1>
+                        <p>Nos conhecemos na faculdade há 6 anos e desde então construímos uma linda história juntos. Estamos muito felizes em celebrar esse momento especial com vocês, nossa família e amigos queridos!</p>
+                        <div class="countdown">
+                            <h3>Contagem regressiva para o grande dia:</h3>
+                            <div class="countdown__timer" id="countdown"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Barra de Progresso -->
+                <div class="progress-section">
+                    <h3>Meta de Arrecadação</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-info">
+                        <span>R$ <span id="totalArrecadado">5.650</span></span>
+                        <span>Meta: R$ 30.000</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filtros -->
+        <section class="filters">
+            <div class="container">
+                <div class="filters__content">
+                    <div class="filters__group">
+                        <select id="categoryFilter" class="form-control">
+                            <option value="">Todas as categorias</option>
+                            <option value="Casa">Casa</option>
+                            <option value="Lua de Mel">Lua de Mel</option>
+                            <option value="Eletrônicos">Eletrônicos</option>
+                            <option value="Experiência">Experiência</option>
+                        </select>
+                    </div>
+                    <div class="filters__group">
+                        <select id="priceFilter" class="form-control">
+                            <option value="">Todas as faixas</option>
+                            <option value="0-500">Até R$ 500</option>
+                            <option value="500-1000">R$ 500 - R$ 1.000</option>
+                            <option value="1000-2000">R$ 1.000 - R$ 2.000</option>
+                            <option value="2000+">Acima de R$ 2.000</option>
+                        </select>
+                    </div>
+                    <div class="filters__group">
+                        <input type="text" id="searchFilter" class="form-control" placeholder="Buscar presente...">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lista de Presentes -->
+        <section class="presents">
+            <div class="container">
+                <div class="presents__grid" id="presentsGrid">
+                    <!-- Os presentes serão inseridos aqui via JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Página de Checkout -->
+    <section id="checkoutPage" class="checkout-page hidden">
+        <div class="container">
+            <button class="btn btn--outline mb-8" id="backToListBtn">← Voltar para a lista</button>
+            
+            <div class="checkout__content">
+                <div class="checkout__form">
+                    <h2>Finalizar Presente</h2>
+                    
+                    <div class="selected-present" id="selectedPresent">
+                        <!-- Presente selecionado será mostrado aqui -->
+                    </div>
+
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label class="form-label">Nome completo *</label>
+                            <input type="text" id="presenteadorNome" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">E-mail *</label>
+                            <input type="email" id="presenteadorEmail" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Mensagem para os noivos</label>
+                            <textarea id="presenteadorMensagem" class="form-control" rows="4" placeholder="Deixe uma mensagem carinhosa..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Forma de pagamento *</label>
+                            <div class="payment-options">
+                                <label class="payment-option">
+                                    <input type="radio" name="pagamento" value="pix" required>
+                                    <span class="payment-option__content">
+                                        <strong>PIX</strong>
+                                        <span>Aprovação instantânea</span>
+                                    </span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="pagamento" value="cartao" required>
+                                    <span class="payment-option__content">
+                                        <strong>Cartão de Crédito</strong>
+                                        <span>Até 12x sem juros</span>
+                                    </span>
+                                </label>
+                                <label class="payment-option">
+                                    <input type="radio" name="pagamento" value="boleto" required>
+                                    <span class="payment-option__content">
+                                        <strong>Boleto Bancário</strong>
+                                        <span>Vencimento em 3 dias</span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn--primary btn--full-width">
+                            Finalizar Compra
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard dos Noivos -->
+    <section id="dashboardPage" class="dashboard-page hidden">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2>Dashboard dos Noivos</h2>
+                <button class="btn btn--outline" id="backToMainBtn">← Voltar para lista</button>
+            </div>
+
+            <!-- Resumo Financeiro -->
+            <div class="dashboard-summary">
+                <div class="summary-card">
+                    <h3>Total Arrecadado</h3>
+                    <div class="summary-value">R$ <span id="dashTotalArrecadado">5.650</span></div>
+                </div>
+                <div class="summary-card">
+                    <h3>Presentes Comprados</h3>
+                    <div class="summary-value" id="dashPresentesComprados">4</div>
+                </div>
+                <div class="summary-card">
+                    <h3>Valor Médio</h3>
+                    <div class="summary-value">R$ <span id="dashValorMedio">1.412</span></div>
+                </div>
+                <div class="summary-card">
+                    <h3>Progresso da Meta</h3>
+                    <div class="summary-value" id="dashProgresso">18,8%</div>
+                </div>
+            </div>
+
+            <!-- Gráficos -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <h3>Arrecadação por Categoria</h3>
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Presenteadores -->
+            <div class="presenteadores-section">
+                <h3>Presenteadores</h3>
+                <div class="presenteadores-list" id="presenteadoresList">
+                    <!-- Lista será populada via JavaScript -->
+                </div>
+            </div>
+
+            <!-- Mensagens -->
+            <div class="mensagens-section">
+                <h3>Mensagens dos Convidados</h3>
+                <div class="mensagens-list" id="mensagensList">
+                    <!-- Mensagens serão populadas via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Sucesso -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal__backdrop">
+            <div class="modal__content">
+                <h3>🎉 Presente enviado com sucesso!</h3>
+                <p>Obrigado pelo seu presente! Guilherme e Lara ficarão muito felizes.</p>
+                <button class="btn btn--primary" id="closeModalBtn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compartilhar -->
+    <div class="share-section">
+        <div class="container">
+            <h3>Compartilhe nossa lista</h3>
+            <div class="share-buttons">
+                <button class="btn btn--outline" onclick="shareOnWhatsApp()">📱 WhatsApp</button>
+                <button class="btn btn--outline" onclick="shareOnFacebook()">📘 Facebook</button>
+                <button class="btn btn--outline" onclick="copyLink()">🔗 Copiar Link</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
