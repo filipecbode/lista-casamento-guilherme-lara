@@ -63,10 +63,14 @@ const elements = {
   minutes: document.getElementById('minutes'),
   seconds: document.getElementById('seconds'),
   
-  // Progress
-  progressFill: document.getElementById('progressFill'),
-  progressText: document.getElementById('progressText'),
-  progressPercentage: document.getElementById('progressPercentage'),
+  // Dashboard Progress (Only in dashboard)
+  progressFillDashboard: document.getElementById('progressFillDashboard'),
+  progressTextDashboard: document.getElementById('progressTextDashboard'),
+  progressPercentageDashboard: document.getElementById('progressPercentageDashboard'),
+  
+  // Meta editing
+  metaInput: document.getElementById('metaInput'),
+  saveMeta: document.getElementById('saveMeta'),
   
   // Filters
   searchInput: document.getElementById('searchInput'),
@@ -178,23 +182,36 @@ function updateCountdown() {
   }
 }
 
-// Update progress bar
-function updateProgress() {
+// Update dashboard progress bar (Only visible in dashboard)
+function updateDashboardProgress() {
   const totalArrecadado = APP_DATA.transacoes.reduce((sum, t) => sum + t.valor, 0);
   const percentage = (totalArrecadado / APP_DATA.noivos.meta) * 100;
   
-  if (elements.progressFill) {
-    elements.progressFill.style.width = `${Math.min(percentage, 100)}%`;
+  if (elements.progressFillDashboard) {
+    elements.progressFillDashboard.style.width = `${Math.min(percentage, 100)}%`;
   }
   
-  if (elements.progressText) {
-    elements.progressText.textContent = `${formatCurrency(totalArrecadado)} de ${formatCurrency(APP_DATA.noivos.meta)}`;
+  if (elements.progressTextDashboard) {
+    elements.progressTextDashboard.textContent = `${formatCurrency(totalArrecadado)} de ${formatCurrency(APP_DATA.noivos.meta)}`;
   }
   
-  if (elements.progressPercentage) {
-    elements.progressPercentage.textContent = `${percentage.toFixed(1)}% da meta alcançada`;
+  if (elements.progressPercentageDashboard) {
+    elements.progressPercentageDashboard.textContent = `${percentage.toFixed(1)}% da meta alcançada`;
   }
 }
+
+// Meta editing functionality
+elements.saveMeta?.addEventListener('click', () => {
+  const newMeta = parseFloat(elements.metaInput?.value);
+  
+  if (newMeta && newMeta > 0) {
+    APP_DATA.noivos.meta = newMeta;
+    updateDashboard();
+    alert('Meta atualizada com sucesso!');
+  } else {
+    alert('Por favor, insira um valor válido para a meta.');
+  }
+});
 
 // Render presentes
 function renderPresentes(presentes = APP_DATA.presentes) {
@@ -364,8 +381,7 @@ elements.checkoutForm?.addEventListener('submit', (e) => {
   elements.checkoutForm?.reset();
   currentPresent = null;
   
-  // Update displays
-  updateProgress();
+  // Re-render presentes to show updated status
   renderPresentes();
   
   if (isLoggedIn) {
@@ -423,11 +439,19 @@ function updateDashboard() {
   const totalConvidados = new Set(APP_DATA.transacoes.map(t => t.email)).size;
   const percentualMeta = ((totalArrecadado / APP_DATA.noivos.meta) * 100).toFixed(1);
   
+  // Update meta input
+  if (elements.metaInput) {
+    elements.metaInput.value = APP_DATA.noivos.meta;
+  }
+  
   // Update stats
   if (elements.totalArrecadado) elements.totalArrecadado.textContent = formatCurrency(totalArrecadado);
   if (elements.presentesComprados) elements.presentesComprados.textContent = presentesComprados;
   if (elements.totalConvidados) elements.totalConvidados.textContent = totalConvidados;
   if (elements.percentualMeta) elements.percentualMeta.textContent = `${percentualMeta}%`;
+  
+  // Update dashboard progress
+  updateDashboardProgress();
   
   // Update transactions list
   updateTransactionsList();
@@ -589,9 +613,6 @@ function init() {
   // Start countdown timer
   updateCountdown();
   setInterval(updateCountdown, 1000);
-  
-  // Initial progress update
-  updateProgress();
   
   // Initial render of presentes
   renderPresentes();

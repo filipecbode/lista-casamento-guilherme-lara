@@ -753,6 +753,14 @@ select.form-control {
   --wedding-blush: rgba(233, 30, 99, 0.1);
   --wedding-purple-light: rgba(142, 36, 170, 0.1);
   
+  /* Cores de alto contraste */
+  --contrast-black: #000000;
+  --contrast-dark-gray: #333333;
+  --contrast-purple: #7c3aed;
+  --contrast-white: #ffffff;
+  --contrast-border: #d1d5db;
+  --contrast-medium-gray: #6b7280;
+  
   /* Gradientes elegantes */
   --gradient-primary: linear-gradient(135deg, var(--wedding-primary), var(--wedding-secondary));
   --gradient-soft: linear-gradient(135deg, var(--wedding-blush), var(--wedding-purple-light));
@@ -820,7 +828,7 @@ body {
 }
 
 .nav-link {
-  color: var(--color-text);
+  color: var(--contrast-black);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
@@ -937,7 +945,7 @@ body {
 
 .hero-subtitle {
   font-size: 1.2rem;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
   margin-bottom: 2rem;
   line-height: 1.6;
 }
@@ -985,7 +993,7 @@ body {
 
 .countdown-item label {
   font-size: 0.9rem;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
   font-weight: 500;
 }
 
@@ -996,13 +1004,14 @@ body {
   font-size: 1.1rem;
 }
 
-/* Progress Section */
-.progress-section {
+/* Dashboard Progress Section */
+.progress-section-dashboard {
   background: white;
   padding: 2rem;
   border-radius: 20px;
   box-shadow: 0 10px 40px rgba(233, 30, 99, 0.15);
   border: 1px solid rgba(233, 30, 99, 0.1);
+  margin-top: 2rem;
 }
 
 .progress-header {
@@ -1036,6 +1045,29 @@ body {
   margin-top: 1rem;
 }
 
+/* Meta Section */
+.meta-section {
+  margin-top: 1rem;
+}
+
+.meta-edit {
+  margin-bottom: 2rem;
+}
+
+.meta-input-group {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.meta-input-group input {
+  flex: 1;
+}
+
+.mb-24 {
+  margin-bottom: 2rem;
+}
+
 /* Seções */
 .section-header {
   text-align: center;
@@ -1054,7 +1086,7 @@ body {
 
 .section-header p {
   font-size: 1.2rem;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
   max-width: 600px;
   margin: 0 auto;
 }
@@ -1074,7 +1106,7 @@ body {
 .historia-content p {
   font-size: 1.3rem;
   line-height: 1.8;
-  color: var(--color-text);
+  color: var(--contrast-black);
   font-weight: 400;
 }
 
@@ -1104,18 +1136,19 @@ body {
 }
 
 .presente-card {
-  background: white;
+  background: var(--contrast-white);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 40px rgba(233, 30, 99, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid rgba(233, 30, 99, 0.1);
+  border: 2px solid var(--contrast-border);
   position: relative;
 }
 
 .presente-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 60px rgba(233, 30, 99, 0.2);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  border-color: var(--wedding-primary);
 }
 
 .presente-card.comprado {
@@ -1130,7 +1163,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%) rotate(-15deg);
   background: var(--wedding-accent);
-  color: white;
+  color: var(--contrast-black);
   padding: 0.5rem 1rem;
   border-radius: 10px;
   font-weight: 700;
@@ -1157,32 +1190,34 @@ body {
 
 .presente-info {
   padding: 1.5rem;
+  background: var(--contrast-white);
 }
 
 .presente-categoria {
   display: inline-block;
-  background: var(--gradient-soft);
-  color: var(--wedding-primary);
+  background: var(--wedding-blush);
+  color: var(--contrast-dark-gray);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  border: 1px solid rgba(233, 30, 99, 0.2);
+  border: 1px solid var(--contrast-border);
 }
 
 .presente-nome {
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: var(--color-text);
+  color: var(--contrast-black);
+  line-height: 1.3;
 }
 
 .presente-preco {
   font-family: var(--font-wedding);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--wedding-secondary);
+  color: var(--contrast-purple);
   margin-bottom: 1rem;
 }
 
@@ -1232,7 +1267,7 @@ body {
 }
 
 .modal-content {
-  background: white;
+  background: var(--contrast-white);
   border-radius: 25px;
   max-width: 500px;
   width: 90%;
@@ -1240,11 +1275,12 @@ body {
   overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  border: 2px solid var(--contrast-border);
 }
 
 .modal-header {
   padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid rgba(233, 30, 99, 0.1);
+  border-bottom: 2px solid var(--contrast-border);
   position: relative;
 }
 
@@ -1271,23 +1307,71 @@ body {
 }
 
 .present-info {
-  background: var(--gradient-soft);
+  background: var(--wedding-blush);
   padding: 1.5rem;
   border-radius: 15px;
   margin-bottom: 2rem;
-  border: 1px solid rgba(233, 30, 99, 0.1);
+  border: 2px solid var(--contrast-border);
 }
 
 .present-info h4 {
-  color: var(--wedding-primary);
+  color: var(--contrast-black);
   margin-bottom: 0.5rem;
+  font-weight: 600;
 }
 
 .present-info .price {
   font-family: var(--font-wedding);
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--wedding-secondary);
+  color: var(--contrast-purple);
+}
+
+/* Form Controls com Alto Contraste */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--contrast-black);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--contrast-black);
+  background-color: var(--contrast-white);
+  border: 2px solid var(--contrast-border);
+  border-radius: 8px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--wedding-primary);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.2);
+}
+
+.form-control::placeholder {
+  color: var(--contrast-medium-gray);
+}
+
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
 .form-actions {
@@ -1351,11 +1435,11 @@ body {
   background: white;
   padding: 2rem;
   border-radius: 20px;
-  box-shadow: 0 10px 40px rgba(233, 30, 99, 0.1);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   gap: 1rem;
-  border: 1px solid rgba(233, 30, 99, 0.1);
+  border: 2px solid var(--contrast-border);
 }
 
 .stat-icon {
@@ -1370,7 +1454,7 @@ body {
 }
 
 .stat-info p {
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
   margin: 0;
   font-weight: 500;
 }
@@ -1393,7 +1477,7 @@ body {
 
 .transaction-item, .message-item {
   padding: 1rem;
-  border-bottom: 1px solid rgba(233, 30, 99, 0.1);
+  border-bottom: 1px solid var(--contrast-border);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1401,19 +1485,20 @@ body {
 
 .transaction-info h5 {
   margin: 0 0 0.25rem 0;
-  color: var(--wedding-primary);
+  color: var(--contrast-black);
+  font-weight: 600;
 }
 
 .transaction-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
 }
 
 .transaction-amount {
   font-family: var(--font-wedding);
   font-weight: 700;
-  color: var(--wedding-secondary);
+  color: var(--contrast-purple);
 }
 
 .message-item {
@@ -1430,25 +1515,26 @@ body {
 
 .message-name {
   font-weight: 600;
-  color: var(--wedding-primary);
+  color: var(--contrast-black);
 }
 
 .message-date {
   font-size: 0.8rem;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
 }
 
 .message-text {
-  background: var(--gradient-soft);
+  background: var(--wedding-blush);
   padding: 1rem;
   border-radius: 15px;
   width: 100%;
-  border: 1px solid rgba(233, 30, 99, 0.1);
+  border: 1px solid var(--contrast-border);
+  color: var(--contrast-black);
 }
 
 .no-transactions, .no-messages {
   text-align: center;
-  color: var(--color-text-secondary);
+  color: var(--contrast-dark-gray);
   padding: 2rem;
   font-style: italic;
 }
@@ -1544,6 +1630,11 @@ body {
   .modal-content {
     margin: 1rem;
     width: calc(100% - 2rem);
+  }
+
+  .meta-input-group {
+    flex-direction: column;
+    align-items: stretch;
   }
 }
 

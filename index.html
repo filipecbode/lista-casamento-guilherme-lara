@@ -68,18 +68,6 @@
                         </div>
                         <p class="wedding-date">29 de Novembro de 2025 às 16:00</p>
                     </div>
-
-                    <!-- Progress Bar -->
-                    <div class="progress-section">
-                        <div class="progress-header">
-                            <span>Arrecadado</span>
-                            <span id="progressText">R$ 0 de R$ 30.000</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <p class="progress-percentage" id="progressPercentage">0% da meta alcançada</p>
-                    </div>
                 </div>
             </div>
         </div>
@@ -210,6 +198,34 @@
 
         <div class="container">
             <div class="dashboard-content">
+                <!-- Meta Editável -->
+                <div class="card mb-24">
+                    <div class="card__body">
+                        <h4>Meta de Arrecadação 💰</h4>
+                        <div class="meta-section">
+                            <div class="meta-edit">
+                                <label class="form-label">Valor da Meta</label>
+                                <div class="meta-input-group">
+                                    <input type="number" id="metaInput" class="form-control" min="0" step="100">
+                                    <button type="button" class="btn btn--primary btn--sm" id="saveMeta">Salvar Meta</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Progress Bar (Dashboard Only) -->
+                            <div class="progress-section-dashboard">
+                                <div class="progress-header">
+                                    <span>Arrecadado</span>
+                                    <span id="progressTextDashboard">R$ 0 de R$ 30.000</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="progressFillDashboard"></div>
+                                </div>
+                                <p class="progress-percentage" id="progressPercentageDashboard">0% da meta alcançada</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
