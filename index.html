@@ -1,106 +1,57 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guilherme & Lara | Lista de Casamento</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lista de Casamento - Lara & Guilherme  </title>
+  <meta name="description" content="Se for de sua vontade, escolha um presente simbólico e contribua para a nova fase de Lara & Guilherme.">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="container">
-      <a href="#" class="nav-brand">G&L</a>
-      <button class="nav-toggle" id="navToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="#hero" class="nav-link">Início</a></li>
-        <li><a href="#presentes" class="nav-link">Presentes</a></li>
-        <li><a href="#historia" class="nav-link">Nossa História</a></li>
-        <li><a href="#" class="nav-link" id="loginBtn">Área dos Noivos</a></li>
-      </ul>
+  <!-- Navbar -->
+  <nav class="navbar" id="home">
+    <div class="container nav-content">
+      <div class="nav-brand">
+        <h2>G&L</h2>
+      </div>
+      <button id="navToggle" class="nav-toggle" aria-label="Abrir menu"><span></span><span></span><span></span></button>
+      <div id="navMenu" class="nav-menu">
+        <a class="nav-link" href="#home">Início</a>
+        <a class="nav-link" href="#presentes">Presentes</a>
+        <a class="nav-link" href="#historia">Nossa História</a>
+        <a class="nav-link" id="loginBtn" href="#">Área dos Noivos</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <section id="hero" class="hero">
-    <div class="container">
-      <div class="hero-content">
-        <div class="hero-text">
-          <h1 class="hero-title">Guilherme & Lara 💞</h1>
-          <p>Estamos nos casando e queremos compartilhar esse momento especial com você! Escolha um presente e ajude a tornar essa nova fase inesquecível.</p>
-          <div class="countdown" id="countdown">
-            <p>Faltam:</p>
-            <div class="countdown-timer">
-              <div class="countdown-item">
-                <span id="days">0</span>Dias
-              </div>
-              <div class="countdown-item">
-                <span id="hours">0</span>Horas
-              </div>
-              <div class="countdown-item">
-                <span id="minutes">0</span>Min
-              </div>
-              <div class="countdown-item">
-                <span id="seconds">0</span>Seg
-              </div>
-            </div>
-            <p>29 de Novembro de 2025 às 16:00 · Horário de Brasília</p>
+  <!-- Hero -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="container hero-content">
+      <div class="hero-text">
+        <h1 class="hero-title">Guilherme & Lara <span>💞</span></h1>
+        <p class="hero-subtitle">Estamos nos casando e queremos compartilhar esse momento especial com você! Escolha um presente e ajude a tornar essa nova fase inesquecível.</p>
+
+        <section class="countdown" aria-labelledby="countdownTitle">
+          <h3 id="countdownTitle">Faltam:</h3>
+          <div class="countdown-timer" id="countdown">
+            <div class="countdown-item"><span id="days">0</span><label>Dias</label></div>
+            <div class="countdown-item"><span id="hours">0</span><label>Horas</label></div>
+            <div class="countdown-item"><span id="minutes">0</span><label>Min</label></div>
+            <div class="countdown-item"><span id="seconds">0</span><label>Seg</label></div>
           </div>
-        </div>
-        <div class="couple-photo">
-          <img src="assets/casal.png" alt="Foto do casal Guilherme e Lara" />
-          <div class="heart">💗</div>
-        </div>
+          <div class="wedding-date">29 de Novembro de 2025 às 16:00 · Horário de Brasília</div>
+        </section>
+      </div>
+      <div class="hero-image">
+        <img class="couple-photo" src="assets/casal.png" alt="Foto do casal Guilherme e Lara" />
+        <div class="hearts">💗</div>
       </div>
     </div>
-  </section>
+  </header>
 
-  <!-- História Section -->
-  <section id="historia" class="historia">
+  <!-- Nossa História -->
+  <section class="historia" id="historia">
     <div class="container">
       <div class="section-header">
         <h2>Nossa História 💝</h2>
@@ -112,107 +63,108 @@
     </div>
   </section>
 
-  <!-- Presentes Section -->
-  <section id="presentes" class="presentes">
+  <!-- Lista de Presentes -->
+  <section class="presentes" id="presentes">
     <div class="container">
       <div class="section-header">
         <h2>Lista de Presentes 🎁</h2>
         <p>Escolha um presente especial para nos ajudar a começar nossa nova vida juntos.</p>
       </div>
+
       <div class="filters">
-        <div class="form-group">
-          <input type="text" id="searchInput" class="form-control" placeholder="Pesquisar presentes...">
-        </div>
-        <div class="form-group">
-          <select id="categoryFilter" class="form-control">
-            <option value="">Todas as categorias</option>
-            <option value="Gastronomia & Bebidas">🍽️ Gastronomia & Bebidas</option>
-            <option value="Experiências a Dois">💞 Experiências a Dois</option>
-            <option value="Viagem & Hospedagem">✈️ Viagem & Hospedagem</option>
-            <option value="Cuidados & Bem-estar">💆 Cuidados & Bem-estar</option>
-            <option value="Preparativos dos Noivos">💍 Preparativos dos Noivos</option>
-            <option value="Transporte & Logística">⛽ Transporte & Logística</option>
-            <option value="Extras & Lembrancinhas">🎁 Extras & Lembrancinhas</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <select id="priceFilter" class="form-control">
-            <option value="">Todos os preços</option>
-            <option value="0-500">Até R$ 500</option>
-            <option value="500-1000">R$ 500 - R$ 1.000</option>
-            <option value="1000-2000">R$ 1.000 - R$ 2.000</option>
-            <option value="2000+">Acima de R$ 2.000</option>
-          </select>
-        </div>
+        <input id="searchInput" class="form-control" type="search" placeholder="Buscar presente (ex.: jantar, mergulho)" aria-label="Buscar presente" />
+
+        <select id="categoryFilter" class="form-control" aria-label="Filtrar por categoria">
+          <option value="">Todas as categorias</option>
+          <option value="Gastronomia & Bebidas">🍽️ Gastronomia & Bebidas</option>
+          <option value="Experiências a Dois">💞 Experiências a Dois</option>
+          <option value="Viagem & Hospedagem">✈️ Viagem & Hospedagem</option>
+          <option value="Cuidados & Bem-estar">💆 Cuidados & Bem-estar</option>
+          <option value="Preparativos dos Noivos">💍 Preparativos dos Noivos</option>
+          <option value="Transporte & Logística">⛽ Transporte & Logística</option>
+          <option value="Extras & Lembrancinhas">🎁 Extras & Lembrancinhas</option>
+        </select>
+
+        <select id="priceFilter" class="form-control" aria-label="Filtrar por preço">
+          <option value="">Todos os preços</option>
+          <option value="0-500">Até R$ 500</option>
+          <option value="500-1000">R$ 500 - R$ 1.000</option>
+          <option value="1000-2000">R$ 1.000 - R$ 2.000</option>
+          <option value="2000+">Acima de R$ 2.000</option>
+        </select>
       </div>
-      <div class="presentes-grid" id="presentesGrid"></div>
+
+      <div id="presentesGrid" class="presentes-grid"></div>
     </div>
   </section>
 
-  <!-- Checkout Modal -->
-  <div id="checkoutModal" class="modal hidden">
+  <!-- Modal de Presente -->
+  <div id="checkoutModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Presentear os Noivos 💖</h3>
-        <button class="modal-close" id="closeModal">×</button>
+        <h3 id="checkoutTitle">Presentear os Noivos 💖</h3>
+        <button id="closeModal" class="modal-close" aria-label="Fechar">×</button>
       </div>
       <div class="modal-body">
-        <div class="present-info" id="presentInfo"></div>
+        <div id="presentInfo" class="present-info"></div>
+
         <form id="checkoutForm">
           <div class="form-group">
-            <label for="buyerName" class="form-label">Nome Completo *</label>
-            <input type="text" id="buyerName" class="form-control" required>
+            <label class="form-label" for="buyerName">Nome Completo *</label>
+            <input id="buyerName" class="form-control" required placeholder="Seu nome" />
           </div>
           <div class="form-group">
-            <label for="buyerEmail" class="form-label">E-mail *</label>
-            <input type="email" id="buyerEmail" class="form-control" required>
+            <label class="form-label" for="buyerEmail">E-mail *</label>
+            <input id="buyerEmail" type="email" class="form-control" required placeholder="seu@email.com" />
           </div>
           <div class="form-group">
-            <label for="buyerPhone" class="form-label">Telefone</label>
-            <input type="tel" id="buyerPhone" class="form-control">
+            <label class="form-label" for="buyerPhone">Telefone</label>
+            <input id="buyerPhone" class="form-control" placeholder="(DD) 99999-9999" />
           </div>
           <div class="form-group">
-            <label for="buyerMessage" class="form-label">Mensagem para os Noivos</label>
-            <textarea id="buyerMessage" class="form-control" rows="4"></textarea>
+            <label class="form-label" for="buyerMessage">Mensagem para os Noivos</label>
+            <textarea id="buyerMessage" class="form-control" rows="3" placeholder="Escreva uma mensagem carinhosa"></textarea>
           </div>
+
           <div class="form-actions">
-            <button type="button" class="btn btn-secondary" id="cancelCheckout">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Confirmar Presente 💝</button>
+            <button type="button" id="cancelCheckout" class="btn btn--outline">Cancelar</button>
+            <button type="submit" class="btn btn--primary">Confirmar Presente 💝</button>
           </div>
         </form>
-        <p class="text-center">• Integração com Mercado Pago será adicionada nesta etapa (Checkout/QR Pix).</p>
+
+        <p class="muted" style="margin-top:12px">• Integração com <strong>Mercado Pago</strong> será adicionada nesta etapa (Checkout/QR Pix). </p>
       </div>
     </div>
   </div>
 
-  <!-- Login Modal -->
-  <div id="loginModal" class="modal hidden">
+  <!-- Modal de Login -->
+  <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Área dos Noivos 👑</h3>
-        <button class="modal-close" id="closeLoginModal">×</button>
+        <h3 id="loginTitle">Área dos Noivos 👑</h3>
+        <button id="closeLoginModal" class="modal-close" aria-label="Fechar">×</button>
       </div>
       <div class="modal-body">
         <form id="loginForm">
           <div class="form-group">
-            <label for="passwordInput" class="form-label">Senha de Acesso</label>
-            <input type="password" id="passwordInput" class="form-control" required>
+            <label class="form-label" for="passwordInput">Senha de Acesso</label>
+            <input id="passwordInput" class="form-control" type="password" placeholder="Digite a senha" />
           </div>
           <div class="form-actions">
-            <button type="button" class="btn btn-secondary" id="cancelLogin">Cancelar</button>
-            <button type="submit" class="btn btn-primary">Entrar</button>
+            <button type="button" id="cancelLogin" class="btn btn--outline">Cancelar</button>
+            <button type="submit" class="btn btn--primary">Entrar</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- Success Modal -->
-  <div id="successModal" class="modal hidden">
+  <!-- Modal de Sucesso -->
+  <div id="successModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="successTitle">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>🎉 Presente Confirmado!</h3>
-        <button class="modal-close" id="closeSuccessModal">×</button>
+        <h3 id="successTitle">🎉 Presente Confirmado!</h3>
+        <button id="closeSuccessModal" class="modal-close" aria-label="Fechar">×</button>
       </div>
       <div class="modal-body text-center">
         <div class="success-icon">💖</div>
@@ -221,94 +173,70 @@
     </div>
   </div>
 
-  <!-- Dashboard -->
-  <section id="dashboard" class="dashboard hidden">
-   rn>
-      <div class="dashboard-nav">
+  <!-- Dashboard dos Noivos -->
+  <section id="dashboard" class="dashboard hidden" aria-label="Dashboard dos Noivos">
+    <div class="dashboard-header">
+      <div class="container dashboard-nav">
         <h2>Dashboard — Guilherme & Lara 👑</h2>
-        <button class="btn btn-secondary" id="logoutBtn">Sair</button>
+        <button id="logoutBtn" class="btn btn--outline">Sair</button>
       </div>
     </div>
-    <div class="dashboard-content">
-      <div class="meta-input">
-        <div class="form-group meta-input-group">
-          <label for="metaInput" class="form-label">Meta de Arrecadação</label>
-          <div class="meta-input-wrapper">
-            <input type="number" id="metaInput" class="form-control" placeholder="Valor da Meta">
-            <button class="btn btn-primary" id="saveMeta">Salvar Meta</button>
+
+    <div class="container dashboard-content">
+      <div class="progress-section-dashboard">
+        <div class="progress-header">
+          <span>Meta de Arrecadação</span>
+          <div class="meta-section">
+            <div class="meta-edit">
+              <div class="meta-input-group">
+                <label class="form-label" for="metaInput">Valor da Meta</label>
+                <input id="metaInput" type="number" class="form-control" />
+                <button id="saveMeta" class="btn btn--primary">Salvar Meta</button>
+              </div>
+            </div>
           </div>
         </div>
+        <div class="progress-bar"><div id="progressFillDashboard" class="progress-fill"></div></div>
+        <div id="progressTextDashboard" class="progress-text">Arrecadado R$ 0 de R$ 30.000</div>
+        <div id="progressPercentageDashboard" class="progress-percentage">0% da meta alcançada</div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" id="progressFillDashboard"></div>
-      </div>
-      <div class="progress-info">
-        <p id="progressTextDashboard">Arrecadado R$ 0 de R$ 30.000</p>
-        <p id="progressPercentageDashboard">0% da meta alcançada</p>
-      </div>
+
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-icon">💰</div>
-          <div class="stat-info">
-            <h3 id="totalArrecadado">R$ 0</h3>
-            <p>Total Arrecadado</p>
-          </div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-info"><h3 id="totalArrecadado">R$ 0</h3><p>Total Arrecadado</p></div></div>
+        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-info"><h3 id="presentesComprados">0</h3><p>Presentes Comprados</p></div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-info"><h3 id="totalConvidados">0</h3><p>Convidados Contribuíram</p></div></div>
+        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-info"><h3 id="percentualMeta">0%</h3><p>da Meta Alcançada</p></div></div>
+      </div>
+
+      <div class="dashboard-row">
+        <div class="dashboard-col card" style="padding:1rem">
+          <h3 style="margin:0 0 1rem 0">Presentes por Categoria</h3>
+          <div style="height:300px"><canvas id="categoryChart"></canvas></div>
         </div>
-        <div class="stat-card">
-          <div class="stat-icon">🎁</div>
-          <div class="stat-info">
-            <h3 id="presentesComprados">0</h3>
-            <p>Presentes Comprados</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-info">
-            <h3 id="totalConvidados">0</h3>
-            <p>Convidados Contribuíram</p>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">📈</div>
-          <div class="stat-info">
-            <h3 id="percentualMeta">0%</h3>
-            <p>da Meta Alcançada</p>
-          </div>
+        <div class="dashboard-col card" style="padding:1rem">
+          <h3 style="margin:0 0 1rem 0">Últimas Transações</h3>
+          <div id="transactionsList" class="transactions-list"></div>
         </div>
       </div>
+
       <div class="dashboard-row">
-        <div class="dashboard-col">
-          <h3>Presentes por Categoria</h3>
-          <canvas id="categoryChart"></canvas>
+        <div class="dashboard-col card" style="padding:1rem">
+          <h3 style="margin:0 0 1rem 0">Mensagens dos Convidados 💌</h3>
+          <div id="messagesList" class="messages-list"></div>
         </div>
-        <div class="dashboard-col">
-          <h3>Últimas Transações</h3>
-          <div class="transactions-list" id="transactionsList">
-            <p class="no-transactions">Nenhuma transação ainda</p>
-          </div>
-        </div>
-      </div>
-      <div class="dashboard-row">
-        <div class="dashboard-col">
-          <h3>Mensagens dos Convidados 💌</h3>
-          <div class="messages-list" id="messagesList">
-            <p class="no-messages">Nenhuma mensagem ainda</p>
-          </div>
-        </div>
+        <div class="dashboard-col"></div>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
-    <div class="container">
-      <div class="footer-content">
-        <p>© 2025 Lista de Casamento — Guilherme & Lara 💞</p>
-        <p>Feito com muito amor e carinho</p>
-      </div>
+    <div class="container footer-content">
+      <p>© 2025 Lista de Casamento — Guilherme & Lara 💞</p>
+      <p>Feito com muito amor e carinho</p>
     </div>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
