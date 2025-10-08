@@ -10,48 +10,38 @@ const APP_DATA = {
     "senha": "guilhermelara2025"
   },
   "presentes": [
-    // 🚗 Transporte & Logística
-    {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "assets/gifts/01-abastecer-a-moto.jpg", "comprado": false},
-
-    // 🍽️ Gastronomia & Bebidas
-    {"id": 2, "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "comprado": false},
-    {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/03-almoco.jpg", "comprado": false},
-    {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/04-jantar.jpg", "comprado": false},
-    {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/05-drinks.jpg", "comprado": false},
-    {"id": 6, "nome": "Noite de fondue", "preco": 190, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/06-noite-de-fondue.jpg", "comprado": false},
-    {"id": 7, "nome": "Espumante no quarto", "preco": 90, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/07-espumante-no-quarto.jpg", "comprado": false},
-    {"id": 8, "nome": "Vodka premium", "preco": 200, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/08-vodka-premium.jpg", "comprado": false},
-
-    // 💑 Experiências a Dois
-    {"id": 9, "nome": "Ingresso de cinema", "preco": 89, "categoria": "Experiências a Dois", "imagem": "assets/gifts/09-ingresso-de-cinema.jpg", "comprado": false},
-    {"id": 10, "nome": "Aulas de valsa", "preco": 210, "categoria": "Experiências a Dois", "imagem": "assets/gifts/10-aulas-de-valsa.jpg", "comprado": false},
-    {"id": 11, "nome": "Passeio a cavalo", "preco": 180, "categoria": "Experiências a Dois", "imagem": "assets/gifts/11-passeio-a-cavalo.jpg", "comprado": false},
-    {"id": 12, "nome": "Passeio de jet ski", "preco": 140, "categoria": "Experiências a Dois", "imagem": "assets/gifts/12-passeio-de-jet-ski.jpg", "comprado": false},
-    {"id": 13, "nome": "Mergulho", "preco": 280, "categoria": "Experiências a Dois", "imagem": "assets/gifts/13-mergulho.jpg", "comprado": false},
-    {"id": 14, "nome": "Salto de paraquedas", "preco": 650, "categoria": "Experiências a Dois", "imagem": "assets/gifts/14-salto-de-paraquedas.jpg", "comprado": false},
-
-    // ✈️ Viagem & Hospedagem
-    {"id": 15, "nome": "1 diária", "preco": 200, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/15-1-diaria.jpg", "comprado": false},
-    {"id": 16, "nome": "2 diárias", "preco": 350, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/16-2-diarias.jpg", "comprado": false},
-    {"id": 17, "nome": "Primeira parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/17-primeira-parcela-da-viagem.jpg", "comprado": false},
-    {"id": 18, "nome": "Última parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/18-ultima-parcela-da-viagem.jpg", "comprado": false},
-    {"id": 19, "nome": "Despacho (8@ de peso) de bagagem da noiva", "preco": 100, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/19-despacho-8-de-peso-de-bagagem-da-noiva.jpg", "comprado": false},
-
-    // 💆 Cuidados & Bem-estar
-    {"id": 20, "nome": "Spa day", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/20-spa-day.jpg", "comprado": false},
-    {"id": 21, "nome": "Limpeza de pele", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/21-limpeza-de-pele.jpg", "comprado": false},
-    {"id": 22, "nome": "Ajuda anti-stress da noiva", "preco": 500, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/22-ajuda-anti-stress-da-noiva.jpg", "comprado": false},
-    {"id": 23, "nome": "Protetor solar da noiva", "preco": 120, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/23-protetor-solar-da-noiva.jpg", "comprado": false},
-    {"id": 24, "nome": "Bronzeador solar do noivo", "preco": 80, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/24-bronzeador-solar-do-noivo.jpg", "comprado": false},
-    {"id": 25, "nome": "Aula de natação da noiva", "preco": 130, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/25-aula-de-natacao-da-noiva.jpg", "comprado": false},
-
-    // 👰‍♂️ Preparativos dos Noivos (com a piada 😄)
-    {"id": 26, "nome": "Cortar o cabelo do noivo", "preco": 8000, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/26-cortar-o-cabelo-do-noivo.jpg", "comprado": false},
-    {"id": 27, "nome": "Sapato personalizado do noivo", "preco": 200, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/27-sapato-personalizado-do-noivo.jpg", "comprado": false},
-
-    // 🛍️ Extras & Lembrancinhas
-    {"id": 28, "nome": "Comprinhas", "preco": 160, "categoria": "Extras & Lembrancinhas", "imagem": "assets/gifts/28-comprinhas.jpg", "comprado": false}
-  ],
+{"id": 1, "nome": "Abastecer moto", "preco": 80, "cotas": 3, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/01.jpg"},
+{"id": 2, "nome": "Café da manhã", "preco": 100, "cotas": 5, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/02.jpg"},
+{"id": 3, "nome": "Almoço", "preco": 120, "cotas": 5, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/03.jpg"},
+{"id": 4, "nome": "Jantar", "preco": 130, "cotas": 5, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/04.jpg"},
+{"id": 5, "nome": "Drinks", "preco": 95, "cotas": 2, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/05.jpg"},
+{"id": 6, "nome": "Spa day", "preco": 240, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/06.jpg"},
+{"id": 7, "nome": "Ingresso cinema", "preco": 89, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/07.jpg"},
+{"id": 8, "nome": "1 diárias", "preco": 200, "cotas": 2, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/08.jpg"},
+{"id": 9, "nome": "2 diárias", "preco": 350, "cotas": 2, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/09.jpg"},
+{"id": 10, "nome": "Limpeza de pele", "preco": 240, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/10.jpg"},
+{"id": 11, "nome": "Cortar o cabelo do noivo", "preco": 2000, "cotas": 5, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/11.jpg"},
+{"id": 12, "nome": "Vodka sem metanol", "preco": 200, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/12.jpg"},
+{"id": 13, "nome": "Vodka com metanol", "preco": 250, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/13.jpg"},
+{"id": 14, "nome": "Aulas de valsa", "preco": 210, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/14.jpg"},
+{"id": 15, "nome": "Passeio a cavalo", "preco": 180, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/15.jpg"},
+{"id": 16, "nome": "Passeio de Jet sky", "preco": 140, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/16.jpg"},
+{"id": 17, "nome": "Mergulho", "preco": 280, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/17.jpg"},
+{"id": 18, "nome": "Ajuda antistress da noiva", "preco": 500, "cotas": 2, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/18.jpg"},
+{"id": 19, "nome": "Noite de Fondue", "preco": 190, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/19.jpg"},
+{"id": 20, "nome": "Espumante no quarto", "preco": 90, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/20.jpg"},
+{"id": 21, "nome": "Salto de paraqueadas", "preco": 650, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/21.jpg"},
+{"id": 22, "nome": "Comprinhas", "preco": 160, "cotas": 5, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/22.jpg"},
+{"id": 23, "nome": "Protetor solar da noiva", "preco": 120, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/23.jpg"},
+{"id": 24, "nome": "Bronzeador solar do noivo", "preco": 80, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/24.jpg"},
+{"id": 25, "nome": "Sapato personalizado do noivo", "preco": 200, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/25.jpg"},
+{"id": 26, "nome": "Primeira parcela da viagem", "preco": 279.99, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/26.jpg"},
+{"id": 27, "nome": "Última parcela da viagem", "preco": 279.99, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/27.jpg"},
+{"id": 28, "nome": "Despacho (8@ de peso) de bagagem da noiva", "preco": 100, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/28.jpg"},
+{"id": 29, "nome": "Aula de natação da noiva", "preco": 130, "cotas": 2, "compradas": 1, "categoria": "Personalizado", "imagem": "assets/gifts/29.jpg"},
+{"id": 30, "nome": "Tour completo lua de mel", "preco": 1200, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/30.jpg"},
+{"id": 31, "nome": "Upgrade de hospedagem lua de mel", "preco": 800, "cotas": 1, "compradas": 0, "categoria": "Personalizado", "imagem": "assets/gifts/31.jpg"}
+],
   "transacoes": [],
   "mensagens": []
 };
