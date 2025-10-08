@@ -3,7 +3,7 @@ const APP_DATA = {
   "noivos": {
     "nome": "Guilherme & Lara",
     "foto": "assets/casal.png",
-    "historia": "Nós nos conhecemos dentro de um ônibus e a conversa fluiu tão leve que o tempo voou. Guilherme criou coragem e me deu o número dele; mesmo com um friozinho na barriga, no dia seguinte eu mandei mensagem. Marcamos nosso primeiro encontro e, desde então, seguimos lado a lado — com carinho, parceria e sonhos em comum. Agora, queremos celebrar esse capítulo tão especial com vocês!",
+    "historia": "Nos conhecemos na faculdade há 6 anos e desde então construímos uma linda história juntos. Estamos muito felizes em celebrar esse momento especial com vocês, nossa família e amigos queridos!",
     // Horário de Brasília explícito (UTC-03:00) para evitar variação de fuso
     "dataCasamento": "2025-11-29T16:00:00-03:00",
     "meta": 30000,
@@ -11,46 +11,46 @@ const APP_DATA = {
   },
   "presentes": [
     // 🚗 Transporte & Logística
-    {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "https://source.unsplash.com/featured/300x300/?gas,pump,motorcycle", "comprado": false},
+    {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "assets/gifts/01-abastecer-a-moto.jpg", "comprado": false},
 
     // 🍽️ Gastronomia & Bebidas
-    {"id": 2, "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?breakfast", "comprado": false},
-    {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?lunch,food", "comprado": false},
-    {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?dinner,restaurant", "comprado": false},
-    {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?cocktails,bar", "comprado": false},
-    {"id": 6, "nome": "Noite de fondue", "preco": 190, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?fondue", "comprado": false},
-    {"id": 7, "nome": "Espumante no quarto", "preco": 90, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?champagne,hotel", "comprado": false},
-    {"id": 8, "nome": "Vodka premium", "preco": 200, "categoria": "Gastronomia & Bebidas", "imagem": "https://source.unsplash.com/featured/300x300/?vodka,bottle", "comprado": false},
+    {"id": 2, "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "comprado": false},
+    {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/03-almoco.jpg", "comprado": false},
+    {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/04-jantar.jpg", "comprado": false},
+    {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/05-drinks.jpg", "comprado": false},
+    {"id": 6, "nome": "Noite de fondue", "preco": 190, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/06-noite-de-fondue.jpg", "comprado": false},
+    {"id": 7, "nome": "Espumante no quarto", "preco": 90, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/07-espumante-no-quarto.jpg", "comprado": false},
+    {"id": 8, "nome": "Vodka premium", "preco": 200, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/08-vodka-premium.jpg", "comprado": false},
 
     // 💑 Experiências a Dois
-    {"id": 9, "nome": "Ingresso de cinema", "preco": 89, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?cinema,popcorn", "comprado": false},
-    {"id": 10, "nome": "Aulas de valsa", "preco": 210, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?waltz,dance,couple", "comprado": false},
-    {"id": 11, "nome": "Passeio a cavalo", "preco": 180, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?horse,riding", "comprado": false},
-    {"id": 12, "nome": "Passeio de jet ski", "preco": 140, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?jetski,sea", "comprado": false},
-    {"id": 13, "nome": "Mergulho", "preco": 280, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?scuba,diving", "comprado": false},
-    {"id": 14, "nome": "Salto de paraquedas", "preco": 650, "categoria": "Experiências a Dois", "imagem": "https://source.unsplash.com/featured/300x300/?skydiving", "comprado": false},
+    {"id": 9, "nome": "Ingresso de cinema", "preco": 89, "categoria": "Experiências a Dois", "imagem": "assets/gifts/09-ingresso-de-cinema.jpg", "comprado": false},
+    {"id": 10, "nome": "Aulas de valsa", "preco": 210, "categoria": "Experiências a Dois", "imagem": "assets/gifts/10-aulas-de-valsa.jpg", "comprado": false},
+    {"id": 11, "nome": "Passeio a cavalo", "preco": 180, "categoria": "Experiências a Dois", "imagem": "assets/gifts/11-passeio-a-cavalo.jpg", "comprado": false},
+    {"id": 12, "nome": "Passeio de jet ski", "preco": 140, "categoria": "Experiências a Dois", "imagem": "assets/gifts/12-passeio-de-jet-ski.jpg", "comprado": false},
+    {"id": 13, "nome": "Mergulho", "preco": 280, "categoria": "Experiências a Dois", "imagem": "assets/gifts/13-mergulho.jpg", "comprado": false},
+    {"id": 14, "nome": "Salto de paraquedas", "preco": 650, "categoria": "Experiências a Dois", "imagem": "assets/gifts/14-salto-de-paraquedas.jpg", "comprado": false},
 
     // ✈️ Viagem & Hospedagem
-    {"id": 15, "nome": "1 diária", "preco": 200, "categoria": "Viagem & Hospedagem", "imagem": "https://source.unsplash.com/featured/300x300/?hotel,room,bed", "comprado": false},
-    {"id": 16, "nome": "2 diárias", "preco": 350, "categoria": "Viagem & Hospedagem", "imagem": "https://source.unsplash.com/featured/300x300/?hotel,resort", "comprado": false},
-    {"id": 17, "nome": "Primeira parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "https://source.unsplash.com/featured/300x300/?airplane,wing", "comprado": false},
-    {"id": 18, "nome": "Última parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "https://source.unsplash.com/featured/300x300/?suitcase,airport", "comprado": false},
-    {"id": 19, "nome": "Despacho (8@ de peso) de bagagem da noiva", "preco": 100, "categoria": "Viagem & Hospedagem", "imagem": "https://source.unsplash.com/featured/300x300/?luggage,check-in", "comprado": false},
+    {"id": 15, "nome": "1 diária", "preco": 200, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/15-1-diaria.jpg", "comprado": false},
+    {"id": 16, "nome": "2 diárias", "preco": 350, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/16-2-diarias.jpg", "comprado": false},
+    {"id": 17, "nome": "Primeira parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/17-primeira-parcela-da-viagem.jpg", "comprado": false},
+    {"id": 18, "nome": "Última parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/18-ultima-parcela-da-viagem.jpg", "comprado": false},
+    {"id": 19, "nome": "Despacho (8@ de peso) de bagagem da noiva", "preco": 100, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/19-despacho-8-de-peso-de-bagagem-da-noiva.jpg", "comprado": false},
 
     // 💆 Cuidados & Bem-estar
-    {"id": 20, "nome": "Spa day", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?spa,relax", "comprado": false},
-    {"id": 21, "nome": "Limpeza de pele", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?facial,skincare", "comprado": false},
-    {"id": 22, "nome": "Ajuda anti-stress da noiva", "preco": 500, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?meditation,relax", "comprado": false},
-    {"id": 23, "nome": "Protetor solar da noiva", "preco": 120, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?sunscreen", "comprado": false},
-    {"id": 24, "nome": "Bronzeador solar do noivo", "preco": 80, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?beach,sunscreen", "comprado": false},
-    {"id": 25, "nome": "Aula de natação da noiva", "preco": 130, "categoria": "Cuidados & Bem-estar", "imagem": "https://source.unsplash.com/featured/300x300/?swimming,pool", "comprado": false},
+    {"id": 20, "nome": "Spa day", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/20-spa-day.jpg", "comprado": false},
+    {"id": 21, "nome": "Limpeza de pele", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/21-limpeza-de-pele.jpg", "comprado": false},
+    {"id": 22, "nome": "Ajuda anti-stress da noiva", "preco": 500, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/22-ajuda-anti-stress-da-noiva.jpg", "comprado": false},
+    {"id": 23, "nome": "Protetor solar da noiva", "preco": 120, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/23-protetor-solar-da-noiva.jpg", "comprado": false},
+    {"id": 24, "nome": "Bronzeador solar do noivo", "preco": 80, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/24-bronzeador-solar-do-noivo.jpg", "comprado": false},
+    {"id": 25, "nome": "Aula de natação da noiva", "preco": 130, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/25-aula-de-natacao-da-noiva.jpg", "comprado": false},
 
     // 👰‍♂️ Preparativos dos Noivos (com a piada 😄)
-    {"id": 26, "nome": "Cortar o cabelo do noivo", "preco": 8000, "categoria": "Preparativos dos Noivos", "imagem": "https://source.unsplash.com/featured/300x300/?barbershop,men,haircut", "comprado": false},
-    {"id": 27, "nome": "Sapato personalizado do noivo", "preco": 200, "categoria": "Preparativos dos Noivos", "imagem": "https://source.unsplash.com/featured/300x300/?mens,dress,shoes", "comprado": false},
+    {"id": 26, "nome": "Cortar o cabelo do noivo", "preco": 8000, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/26-cortar-o-cabelo-do-noivo.jpg", "comprado": false},
+    {"id": 27, "nome": "Sapato personalizado do noivo", "preco": 200, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/27-sapato-personalizado-do-noivo.jpg", "comprado": false},
 
     // 🛍️ Extras & Lembrancinhas
-    {"id": 28, "nome": "Comprinhas", "preco": 160, "categoria": "Extras & Lembrancinhas", "imagem": "https://source.unsplash.com/featured/300x300/?shopping,bags", "comprado": false}
+    {"id": 28, "nome": "Comprinhas", "preco": 160, "categoria": "Extras & Lembrancinhas", "imagem": "assets/gifts/28-comprinhas.jpg", "comprado": false}
   ],
   "transacoes": [],
   "mensagens": []
@@ -187,7 +187,7 @@ function renderPresentes(presentes = APP_DATA.presentes) {
     const emoji = categoryEmojis[presente.categoria] || '🎁';
     card.innerHTML = `
       <div class="presente-image">
-        <img src="${presente.imagem}" alt="${presente.nome}" loading="lazy" />
+        <img src="${presente.imagem}" alt="${presente.nome}" loading="lazy" onerror="this.onerror=null;this.src='assets/gifts/placeholder.jpg';" />
       </div>
       <div class="presente-info">
         <div class="presente-categoria">${emoji} ${presente.categoria}</div>
@@ -212,10 +212,11 @@ function filterPresentes() {
     if (priceRange) {
       const price = p.preco;
       switch (priceRange) {
-  case '0-500': matchesPrice = price <= 500; break;
-  case '500-1000': matchesPrice = price > 500 && price <= 1000; break;
-  case '2000+': matchesPrice = price > 2000; break;
-}
+        case '0-500': matchesPrice = price <= 500; break;
+        case '500-1000': matchesPrice = price > 500 && price <= 1000; break;
+        case '1000-2000': matchesPrice = price > 1000 && price <= 2000; break;
+        case '2000+': matchesPrice = price > 2000; break;
+      }
     }
     return matchesSearch && matchesCategory && matchesPrice;
   });
