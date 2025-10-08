@@ -3,54 +3,57 @@ const APP_DATA = {
   "noivos": {
     "nome": "Guilherme & Lara",
     "foto": "assets/casal.png",
-    "historia": "Nos conhecemos na faculdade há 6 anos e desde então construímos uma linda história juntos. Estamos muito felizes em celebrar esse momento especial com vocês, nossa família e amigos queridos!",
+    "historia": "Nós nos conhecemos dentro de um ônibus e a conversa fluiu tão leve que o tempo voou. Guilherme criou coragem e me deu o número dele; mesmo com um friozinho na barriga, no dia seguinte eu mandei mensagem. Marcamos nosso primeiro encontro e, desde então, seguimos lado a lado — com carinho, parceria e sonhos em comum. Agora, queremos celebrar esse capítulo tão especial com vocês!",
     // Horário de Brasília explícito (UTC-03:00) para evitar variação de fuso
     "dataCasamento": "2025-11-29T16:00:00-03:00",
     "meta": 30000,
     "senha": "guilhermelara2025"
   },
   "presentes": [
-    // 🚗 Transporte & Logística
-    {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "assets/gifts/01-abastecer-a-moto.jpg", "comprado": false},
+    // Transporte & Logística
+    {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "assets/gifts/01-abastecer-a-moto.jpg", "cotasTotal": 3, "cotasCompradas": 1},
 
-    // 🍽️ Gastronomia & Bebidas
-    {"id": 2, "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "comprado": false},
-    {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/03-almoco.jpg", "comprado": false},
-    {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/04-jantar.jpg", "comprado": false},
-    {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/05-drinks.jpg", "comprado": false},
-    {"id": 6, "nome": "Noite de fondue", "preco": 190, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/06-noite-de-fondue.jpg", "comprado": false},
-    {"id": 7, "nome": "Espumante no quarto", "preco": 90, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/07-espumante-no-quarto.jpg", "comprado": false},
-    {"id": 8, "nome": "Vodka premium", "preco": 200, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/08-vodka-premium.jpg", "comprado": false},
+    // Gastronomia & Bebidas
+    {"id":  Rosada", "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "cotasTotal": 5, "cotasCompradas": 1},
+    {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/03-almoco.jpg", "cotasTotal": 5, "cotasCompradas": 1},
+    {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/04-jantar.jpg", "cotasTotal": 5, "cotasCompradas": 1},
+    {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/05-drinks.jpg", "cotasTotal": 2, "cotasCompradas": 0},
+    {"id": 6, "nome": "Noite de fondue", "preco": 190, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/06-noite-de-fondue.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 7, "nome": "Espumante no quarto", "preco": 90, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/07-espumante-no-quarto.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 8, "nome": "Vodka sem metanol", "preco": 200, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/vodka-sem-metanol.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 9, "nome": "Vodka com metanol", "preco": 250, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/vodka-com-metanol.jpg", "cotasTotal": 1, "cotasCompradas": 0},
 
-    // 💑 Experiências a Dois
-    {"id": 9, "nome": "Ingresso de cinema", "preco": 89, "categoria": "Experiências a Dois", "imagem": "assets/gifts/09-ingresso-de-cinema.jpg", "comprado": false},
-    {"id": 10, "nome": "Aulas de valsa", "preco": 210, "categoria": "Experiências a Dois", "imagem": "assets/gifts/10-aulas-de-valsa.jpg", "comprado": false},
-    {"id": 11, "nome": "Passeio a cavalo", "preco": 180, "categoria": "Experiências a Dois", "imagem": "assets/gifts/11-passeio-a-cavalo.jpg", "comprado": false},
-    {"id": 12, "nome": "Passeio de jet ski", "preco": 140, "categoria": "Experiências a Dois", "imagem": "assets/gifts/12-passeio-de-jet-ski.jpg", "comprado": false},
-    {"id": 13, "nome": "Mergulho", "preco": 280, "categoria": "Experiências a Dois", "imagem": "assets/gifts/13-mergulho.jpg", "comprado": false},
-    {"id": 14, "nome": "Salto de paraquedas", "preco": 650, "categoria": "Experiências a Dois", "imagem": "assets/gifts/14-salto-de-paraquedas.jpg", "comprado": false},
+    // Experiências a Dois
+    {"id": 10, "nome": "Ingresso de cinema", "preco": 89, "categoria": "Experiências a Dois", "imagem": "assets/gifts/09-ingresso-de-cinema.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 11, "nome": "Aulas de valsa", "preco": 210, "categoria": "Experiências a Dois", "imagem": "assets/gifts/10-aulas-de-valsa.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 12, "nome": "Passeio a cavalo", "preco": 180, "categoria": "Experiências a Dois", "imagem": "assets/gifts/11-passeio-a-cavalo.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 13, "nome": "Passeio de jet ski", "preco": 140, "categoria": "Experiências a Dois", "imagem": "assets/gifts/12-passeio-de-jet-ski.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 14, "nome": "Mergulho", "preco": 280, "categoria": "Experiências a Dois", "imagem": "assets/gifts/13-mergulho.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 15, "nome": "Salto de paraquedas", "preco": 650, "categoria": "Experiências a Dois", "imagem": "assets/gifts/14-salto-de-paraquedas.jpg", "cotasTotal": 1, "cotasCompradas": 0},
 
-    // ✈️ Viagem & Hospedagem
-    {"id": 15, "nome": "1 diária", "preco": 200, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/15-1-diaria.jpg", "comprado": false},
-    {"id": 16, "nome": "2 diárias", "preco": 350, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/16-2-diarias.jpg", "comprado": false},
-    {"id": 17, "nome": "Primeira parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/17-primeira-parcela-da-viagem.jpg", "comprado": false},
-    {"id": 18, "nome": "Última parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/18-ultima-parcela-da-viagem.jpg", "comprado": false},
-    {"id": 19, "nome": "Despacho (8@ de peso) de bagagem da noiva", "preco": 100, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/19-despacho-8-de-peso-de-bagagem-da-noiva.jpg", "comprado": false},
+    // Viagem & Hospedagem
+    {"id": 16, "nome": "1 diária", "preco": 200, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/15-1-diaria.jpg", "cotasTotal": 2, "cotasCompradas": 0},
+    {"id": 17, "nome": "2 diárias", "preco": 350, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/16-2-diarias.jpg", "cotasTotal": 2, "cotasCompradas": 0},
+    {"id": 18, "nome": "Primeira parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/17-primeira-parcela-da-viagem.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 19, "nome": "Última parcela da viagem", "preco": 279.99, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/18-ultima-parcela-da-viagem.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 20, "nome": "Despacho (8kg de peso) de bagagem da noiva", "preco": 100, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/19-despacho-8-de-peso-de-bagagem-da-noiva.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 21, "nome": "Tour completo lua de mel", "preco": 1200, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/tour-completo-lua-de-mel.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 22, "nome": "Upgrade de hospedagem lua de mel", "preco": 800, "categoria": "Viagem & Hospedagem", "imagem": "assets/gifts/upgrade-de-hospedagem-lua-de-mel.jpg", "cotasTotal": 1, "cotasCompradas": 0},
 
-    // 💆 Cuidados & Bem-estar
-    {"id": 20, "nome": "Spa day", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/20-spa-day.jpg", "comprado": false},
-    {"id": 21, "nome": "Limpeza de pele", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/21-limpeza-de-pele.jpg", "comprado": false},
-    {"id": 22, "nome": "Ajuda anti-stress da noiva", "preco": 500, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/22-ajuda-anti-stress-da-noiva.jpg", "comprado": false},
-    {"id": 23, "nome": "Protetor solar da noiva", "preco": 120, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/23-protetor-solar-da-noiva.jpg", "comprado": false},
-    {"id": 24, "nome": "Bronzeador solar do noivo", "preco": 80, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/24-bronzeador-solar-do-noivo.jpg", "comprado": false},
-    {"id": 25, "nome": "Aula de natação da noiva", "preco": 130, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/25-aula-de-natacao-da-noiva.jpg", "comprado": false},
+    // Cuidados & Bem-estar
+    {"id": 23, "nome": "Spa day", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/20-spa-day.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 24, "nome": "Limpeza de pele", "preco": 240, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/21-limpeza-de-pele.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 25, "nome": "Ajuda anti-stress da noiva", "preco": 500, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/22-ajuda-anti-stress-da-noiva.jpg", "cotasTotal": 2, "cotasCompradas": 0},
+    {"id": 26, "nome": "Protetor solar da noiva", "preco": 120, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/23-protetor-solar-da-noiva.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 27, "nome": "Bronzeador solar do noivo", "preco": 80, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/24-bronzeador-solar-do-noivo.jpg", "cotasTotal": 1, "cotasCompradas": 0},
+    {"id": 28, "nome": "Aula de natação da noiva", "preco": 130, "categoria": "Cuidados & Bem-estar", "imagem": "assets/gifts/25-aula-de-natacao-da-noiva.jpg", "cotasTotal": 2, "cotasCompradas": 0},
 
-    // 👰‍♂️ Preparativos dos Noivos (com a piada 😄)
-    {"id": 26, "nome": "Cortar o cabelo do noivo", "preco": 8000, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/26-cortar-o-cabelo-do-noivo.jpg", "comprado": false},
-    {"id": 27, "nome": "Sapato personalizado do noivo", "preco": 200, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/27-sapato-personalizado-do-noivo.jpg", "comprado": false},
+    // Preparativos dos Noivos
+    {"id": 29, "nome": "Cortar o cabelo do noivo", "preco": 8000, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/26-cortar-o-cabelo-do-noivo.jpg", "cotasTotal": 4, "cotasCompradas": 1},
+    {"id": 30, "nome": "Sapato personalizado do noivo", "preco": 200, "categoria": "Preparativos dos Noivos", "imagem": "assets/gifts/27-sapato-personalizado-do-noivo.jpg", "cotasTotal": 1, "cotasCompradas": 0},
 
-    // 🛍️ Extras & Lembrancinhas
-    {"id": 28, "nome": "Comprinhas", "preco": 160, "categoria": "Extras & Lembrancinhas", "imagem": "assets/gifts/28-comprinhas.jpg", "comprado": false}
+    // Extras & Lembrancinhas
+    {"id": 31, "nome": "Comprinhas", "preco": 160, "categoria": "Extras & Lembrancinhas", "imagem": "assets/gifts/28-comprinhas.jpg", "cotasTotal": 5, "cotasCompradas": 1}
   ],
   "transacoes": [],
   "mensagens": []
@@ -182,8 +185,10 @@ function renderPresentes(presentes = APP_DATA.presentes) {
   if (!elements.presentesGrid) return;
   elements.presentesGrid.innerHTML = '';
   presentes.forEach(presente => {
+    const cotasDisponiveis = presente.cotasTotal - presente.cotasCompradas;
+    const isEsgotado = cotasDisponiveis <= 0;
     const card = document.createElement('div');
-    card.className = `presente-card ${presente.comprado ? 'comprado' : ''}`;
+    card.className = `presente-card ${isEsgotado ? 'esgotado' : ''}`;
     const emoji = categoryEmojis[presente.categoria] || '🎁';
     card.innerHTML = `
       <div class="presente-image">
@@ -193,7 +198,8 @@ function renderPresentes(presentes = APP_DATA.presentes) {
         <div class="presente-categoria">${emoji} ${presente.categoria}</div>
         <h3 class="presente-nome">${presente.nome}</h3>
         <div class="presente-preco">${formatCurrency(presente.preco)}</div>
-        <button class="btn-presentear" ${presente.comprado ? 'disabled' : ''} onclick="openCheckoutModal(${presente.id})">${presente.comprado ? '✓ Presenteado' : '💝 Presentear'}</button>
+        <div class="presente-cotas">Restam ${cotasDisponiveis} de ${presente.cotasTotal} cotas</div>
+        <button class="btn-presentear" ${isEsgotado ? 'disabled' : ''} onclick="openCheckoutModal(${presente.id})">${isEsgotado ? 'Esgotado' : '💝 Presentear'}</button>
       </div>
     `;
     elements.presentesGrid.appendChild(card);
@@ -230,7 +236,7 @@ elements.priceFilter?.addEventListener('change', filterPresentes);
 // Modal de checkout
 function openCheckoutModal(presenteId) {
   const presente = APP_DATA.presentes.find(p => p.id === presenteId);
-  if (!presente || presente.comprado) return;
+  if (!presente || (presente.cotasTotal - presente.cotasCompradas) <= 0) return;
   currentPresent = presente;
   if (elements.presentInfo) {
     elements.presentInfo.innerHTML = `<h4>${presente.nome}</h4><div class="price">${formatCurrency(presente.preco)}</div>`;
@@ -261,7 +267,7 @@ elements.checkoutForm?.addEventListener('submit', (e) => {
   // e redirecionamento para o Checkout (ou exibição do QR Pix). Por enquanto,
   // seguimos com o comportamento de simulação abaixo.
 
-  currentPresent.comprado = true;
+  currentPresent.cotasCompradas++;
   APP_DATA.transacoes.push({
     id: Date.now(),
     presenteId: currentPresent.id,
