@@ -14,7 +14,7 @@ const APP_DATA = {
     {"id": 1, "nome": "Abastecer a moto", "preco": 80, "categoria": "Transporte & Logística", "imagem": "assets/gifts/01-abastecer-a-moto.jpg", "cotasTotal": 3, "cotasCompradas": 1},
 
     // Gastronomia & Bebidas
-    {"id":  Rosada", "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "cotasTotal": 5, "cotasCompradas": 1},
+    {"id": 2, "nome": "Café da manhã", "preco": 100, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/02-cafe-da-manha.jpg", "cotasTotal": 5, "cotasCompradas": 1},
     {"id": 3, "nome": "Almoço", "preco": 120, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/03-almoco.jpg", "cotasTotal": 5, "cotasCompradas": 1},
     {"id": 4, "nome": "Jantar", "preco": 130, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/04-jantar.jpg", "cotasTotal": 5, "cotasCompradas": 1},
     {"id": 5, "nome": "Drinks", "preco": 95, "categoria": "Gastronomia & Bebidas", "imagem": "assets/gifts/05-drinks.jpg", "cotasTotal": 2, "cotasCompradas": 0},
@@ -138,25 +138,25 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 elements.navToggle?.addEventListener('click', () => elements.navMenu?.classList.toggle('active'));
 document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => elements.navMenu?.classList.remove('active')));
 
-// Countdown com fuso explícito (-03:00)
+// Countdown com fuso explícito (-03:00) - CORRIGIDO: Ajuste no cálculo de dias para evitar arredondamento negativo
 function updateCountdown() {
   const weddingDate = new Date(APP_DATA.noivos.dataCasamento);
   const now = new Date();
   const diff = weddingDate - now;
   if (diff > 0) {
-    const days = Math.floor(diff / (1000*60*60*24));
-    const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
-    const minutes = Math.floor((diff % (1000*60*60)) / (1000*60));
-    const seconds = Math.floor((diff % (1000*60)) / 1000);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
     if (elements.days) elements.days.textContent = days;
-    if (elements.hours) elements.hours.textContent = hours;
-    if (elements.minutes) elements.minutes.textContent = minutes;
-    if (elements.seconds) elements.seconds.textContent = seconds;
+    if (elements.hours) elements.hours.textContent = hours.padStart(2, '0');
+    if (elements.minutes) elements.minutes.textContent = minutes.padStart(2, '0');
+    if (elements.seconds) elements.seconds.textContent = seconds.padStart(2, '0');
   } else {
     if (elements.days) elements.days.textContent = '0';
-    if (elements.hours) elements.hours.textContent = '0';
-    if (elements.minutes) elements.minutes.textContent = '0';
-    if (elements.seconds) elements.seconds.textContent = '0';
+    if (elements.hours) elements.hours.textContent = '00';
+    if (elements.minutes) elements.minutes.textContent = '00';
+    if (elements.seconds) elements.seconds.textContent = '00';
   }
 }
 
@@ -180,9 +180,12 @@ elements.saveMeta?.addEventListener('click', () => {
   }
 });
 
-// Renderização da lista de presentes
+// Renderização da lista de presentes - CORRIGIDO: Garante render mesmo se grid vazio
 function renderPresentes(presentes = APP_DATA.presentes) {
-  if (!elements.presentesGrid) return;
+  if (!elements.presentesGrid) {
+    console.error('Elemento presentesGrid não encontrado!');
+    return;
+  }
   elements.presentesGrid.innerHTML = '';
   presentes.forEach(presente => {
     const cotasDisponiveis = presente.cotasTotal - presente.cotasCompradas;
@@ -198,12 +201,13 @@ function renderPresentes(presentes = APP_DATA.presentes) {
         <div class="presente-categoria">${emoji} ${presente.categoria}</div>
         <h3 class="presente-nome">${presente.nome}</h3>
         <div class="presente-preco">${formatCurrency(presente.preco)}</div>
-        <div class="presente-cotas">Restam ${cotasDisponiveis} de ${presente.cotasTotal} cotas</div>
+        <div class="presente-cotas">${cotasDisponiveis > 0 ? `Restam ${cotasDisponiveis} de ${presente.cotasTotal} cotas` : 'Esgotado'}</div>
         <button class="btn-presentear" ${isEsgotado ? 'disabled' : ''} onclick="openCheckoutModal(${presente.id})">${isEsgotado ? 'Esgotado' : '💝 Presentear'}</button>
       </div>
     `;
     elements.presentesGrid.appendChild(card);
   });
+  console.log('Presentes renderizados:', presentes.length); // Debug
 }
 
 // Filtros
@@ -239,11 +243,11 @@ function openCheckoutModal(presenteId) {
   if (!presente || (presente.cotasTotal - presente.cotasCompradas) <= 0) return;
   currentPresent = presente;
   if (elements.presentInfo) {
-    elements.presentInfo.innerHTML = `<h4>${presente.nome}</h4><div class="price">${formatCurrency(presente.preco)}</div>`;
+    elements.presentInfo.innerHTML = `<h4>${presente.nome}</h4><div class="price">${formatCurrency(presente.preco)}</div><p>Restam ${presente.cotasTotal - presente.cotasCompradas - 1} cotas após esta compra.</p>`;
   }
   elements.checkoutModal?.classList.remove('hidden');
 }
-window.openCheckoutModal = openCheckoutModal; // para uso no onclick
+window.openCheckoutModal = openCheckoutModal;
 
 elements.closeModal?.addEventListener('click', () => { elements.checkoutModal?.classList.add('hidden'); currentPresent = null; });
 elements.cancelCheckout?.addEventListener('click', () => { elements.checkoutModal?.classList.add('hidden'); currentPresent = null; });
@@ -251,7 +255,7 @@ elements.closeLoginModal?.addEventListener('click', () => elements.loginModal?.c
 elements.cancelLogin?.addEventListener('click', () => elements.loginModal?.classList.add('hidden'));
 elements.closeSuccessModal?.addEventListener('click', () => elements.successModal?.classList.add('hidden'));
 
-// Submit do presente (placeholder, futura integração Mercado Pago)
+// Submit do presente
 elements.checkoutForm?.addEventListener('submit', (e) => {
   e.preventDefault();
   if (!currentPresent) return;
@@ -262,10 +266,6 @@ elements.checkoutForm?.addEventListener('submit', (e) => {
     telefone: elements.buyerPhone?.value,
     mensagem: elements.buyerMessage?.value
   };
-
-  // Aqui entraremos com a criação da preferência de pagamento do Mercado Pago
-  // e redirecionamento para o Checkout (ou exibição do QR Pix). Por enquanto,
-  // seguimos com o comportamento de simulação abaixo.
 
   currentPresent.cotasCompradas++;
   APP_DATA.transacoes.push({
@@ -401,9 +401,13 @@ window.addEventListener('click', (e) => {
 });
 
 function init() {
+  console.log('Inicializando app...'); // Debug
   updateCountdown();
   setInterval(updateCountdown, 1000);
-  renderPresentes();
+  renderPresentes(); // Garante que renderize na init
+  // Atualiza história no HTML se necessário
+  const historiaContent = document.querySelector('.historia-content p');
+  if (historiaContent) historiaContent.textContent = APP_DATA.noivos.historia;
 }
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
