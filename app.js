@@ -3,7 +3,7 @@ const APP_DATA = {
   "noivos": {
     "nome": "Guilherme & Lara",
     "foto": "assets/casal.png",
-    "historia": "Nos conhecemos na faculdade há 6 anos e desde então construímos uma linda história juntos. Estamos muito felizes em celebrar esse momento especial com vocês, nossa família e amigos queridos!",
+    "historia": "Nós nos conhecemos dentro de um ônibus e a conversa fluiu tão leve que o tempo voou. Guilherme criou coragem e me deu o número dele; mesmo com um friozinho na barriga, no dia seguinte eu mandei mensagem. Marcamos nosso primeiro encontro e, desde então, seguimos lado a lado — com carinho, parceria e sonhos em comum. Agora, queremos celebrar esse capítulo tão especial com vocês!",
     // Horário de Brasília explícito (UTC-03:00) para evitar variação de fuso
     "dataCasamento": "2025-11-29T16:00:00-03:00",
     "meta": 30000,
@@ -212,11 +212,10 @@ function filterPresentes() {
     if (priceRange) {
       const price = p.preco;
       switch (priceRange) {
-        case '0-500': matchesPrice = price <= 500; break;
-        case '500-1000': matchesPrice = price > 500 && price <= 1000; break;
-        case '1000-2000': matchesPrice = price > 1000 && price <= 2000; break;
-        case '2000+': matchesPrice = price > 2000; break;
-      }
+  case '0-500': matchesPrice = price <= 500; break;
+  case '500-1000': matchesPrice = price > 500 && price <= 1000; break;
+  case '2000+': matchesPrice = price > 2000; break;
+}
     }
     return matchesSearch && matchesCategory && matchesPrice;
   });
