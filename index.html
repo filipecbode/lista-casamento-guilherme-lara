@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body id="home">
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="container nav-content">
       <div class="nav-brand"><h2>G&amp;L</h2></div>
@@ -19,6 +18,7 @@
       </button>
       <div id="navMenu" class="nav-menu">
         <a class="nav-link" href="#home">Início</a>
+        <a class="nav-link" href="#rsvp">Presença</a>
         <a class="nav-link" href="#presentes">Presentes</a>
         <a class="nav-link" href="#historia">Nossa História</a>
         <a class="nav-link" id="loginBtn" href="#">Área dos Noivos</a>
@@ -26,7 +26,6 @@
     </div>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
     <div class="hero-bg"></div>
     <div class="container hero-content">
@@ -51,7 +50,6 @@
     </div>
   </section>
 
-  <!-- Nossa História -->
   <section id="historia" class="historia">
     <div class="container historia-content">
       <div class="section-header">
@@ -62,7 +60,37 @@
     </div>
   </section>
 
-  <!-- Lista de Presentes -->
+  <section id="rsvp" class="rsvp">
+    <div class="container rsvp-content">
+        <div class="section-header">
+            <h2>Confirmação de Presença 👋</h2>
+            <p>Por favor, nos ajude a planejar melhor nosso dia especial. Confirme sua presença o quanto antes!</p>
+        </div>
+        
+        <form id="rsvpForm" class="rsvp-form">
+            <div class="form-group">
+                <label class="form-label" for="guestName">Seu Nome Completo *</label>
+                <input id="guestName" class="form-control" type="text" placeholder="Ex: Maria da Silva" required />
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="guestCount">Número de Pessoas na Confirmação *</label>
+                <input id="guestCount" class="form-control" type="number" min="1" value="1" required />
+                <small class="help-text">Inclua você e seus acompanhantes nesta contagem.</small>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="guestMessage">Mensagem Opcional</label>
+                <textarea id="guestMessage" class="form-control" rows="2" placeholder="Deixe um recadinho! Ex: Mal podemos esperar!"></textarea>
+            </div>
+            <div class="form-actions form-actions--single">
+                <button type="submit" id="rsvpSubmitBtn" class="btn btn--primary">
+                    Confirmar Presença
+                </button>
+            </div>
+            <div id="rsvpMessage" class="help-text text-center" style="margin-top: 15px; font-weight: 600;"></div>
+        </form>
+    </div>
+  </section>
+
   <section id="presentes" class="presentes">
     <div class="container">
       <div class="section-header">
@@ -95,7 +123,6 @@
     </div>
   </section>
 
-  <!-- Modal de Checkout -->
   <div id="checkoutModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-content">
       <div class="modal-header">
@@ -143,7 +170,6 @@
     </div>
   </div>
 
-  <!-- Modais de Login e Sucesso -->
   <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-content">
       <div class="modal-header">
@@ -178,7 +204,6 @@
     </div>
   </div>
 
-  <!-- Dashboard -->
   <section id="dashboard" class="dashboard hidden">
     <div class="dashboard-header">
       <div class="container dashboard-nav">
