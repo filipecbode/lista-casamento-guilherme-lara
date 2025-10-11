@@ -186,7 +186,7 @@ window.openCheckoutModal=openCheckoutModal;
 // -----------------------------------------------------------
 // 🚨 URL CORRETO DO GOOGLE APPS SCRIPT (APLICATIVO DA WEB) 🚨
 // -----------------------------------------------------------
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuPm58g8DQtFbsKIgti-u5AI3byVHLnhHhogt9Cau2ZWliVtkJXokM8YknNBpF0ZXZ/exec'; 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOTOGIZvH4YAz8vlQMiPOuG7Y_Fv9yN-6Nxiiq4Zudv0J3bQznEN_4jpHhXgG7vj3f/exec'; 
 
 // Submit (INTEGRAÇÃO REAL de Transação/Mensagem)
 elements.checkoutForm?.addEventListener('submit', async (e) => { 
@@ -224,9 +224,9 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
         APP_DATA.transacoes.push({
             data: new Date().toISOString(), 
             presenteNome: currentPresent.nome,
-            valorTotal: valorTotal,
+            valor: valorTotal,
             quantidade: qty,
-            nomeComprador: nome,
+            comprador: nome,
             email: email,
             mensagem: mensagem
         });
