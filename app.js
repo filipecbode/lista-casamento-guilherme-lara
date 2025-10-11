@@ -95,7 +95,15 @@ const elements = {
   buyerName: document.getElementById('buyerName'),
   buyerEmail: document.getElementById('buyerEmail'),
   buyerPhone: document.getElementById('buyerPhone'),
-  buyerMessage: document.getElementById('buyerMessage')
+  buyerMessage: document.getElementById('buyerMessage'),
+  
+  // NOVOS ELEMENTOS DO RSVP
+  rsvpForm: document.getElementById('rsvpForm'),
+  rsvpSubmitBtn: document.getElementById('rsvpSubmitBtn'),
+  rsvpMessage: document.getElementById('rsvpMessage'),
+  guestName: document.getElementById('guestName'),
+  guestCount: document.getElementById('guestCount'),
+  guestMessage: document.getElementById('guestMessage')
 };
 
 // Utils
@@ -169,16 +177,113 @@ window.openCheckoutModal=openCheckoutModal;
   });
 });
 
-// Submit (simulação)
-elements.checkoutForm?.addEventListener('submit',(e)=>{
-  e.preventDefault(); if(!currentPresent) return;
-  const rem=getRemaining(currentPresent); const qty=Math.min(Math.max(parseInt(elements.shareQty?.value||'1',10),1),rem);
-  const nome=elements.buyerName?.value; const email=elements.buyerEmail?.value; const telefone=elements.buyerPhone?.value; const mensagem=elements.buyerMessage?.value;
-  currentPresent.compradas=(currentPresent.compradas||0)+qty;
-  APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:currentPresent.preco*qty,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
-  if((mensagem||'').trim()) APP_DATA.mensagens.push({id:Date.now()+1,nome, mensagem, data:new Date().toISOString()});
-  elements.checkoutModal?.classList.add('hidden'); elements.successModal?.classList.remove('hidden'); elements.checkoutForm?.reset(); currentPresent=null; renderPresentes();
+// ⚠️ SUBSTITUA ESTA URL PELA QUE VOCÊ GERARÁ NO GOOGLE APPS SCRIPT (PASSO 2)
+const SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE'; 
+
+// Submit (INTEGRAÇÃO REAL de Mensagem)
+elements.checkoutForm?.addEventListener('submit', async (e) => { 
+    e.preventDefault(); 
+    if(!currentPresent) return;
+
+    // Lógica do seu código para simular a compra (manter)
+    const rem=getRemaining(currentPresent); 
+    const qty=Math.min(Math.max(parseInt(elements.shareQty?.value||'1',10),1),rem);
+    const nome=elements.buyerName?.value; 
+    const email=elements.buyerEmail?.value; 
+    const telefone=elements.buyerPhone?.value; 
+    const mensagem=elements.buyerMessage?.value;
+    
+    currentPresent.compradas=(currentPresent.compradas||0)+qty;
+    APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:currentPresent.preco*qty,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
+    // Seu APP_DATA continuará simulando as mensagens e transações no Dashboard
+    if((mensagem||'').trim()) APP_DATA.mensagens.push({id:Date.now()+1,nome, mensagem, data:new Date().toISOString()});
+
+    // --- NOVA LÓGICA DE ENVIO DA MENSAGEM PARA O GOOGLE SHEETS ---
+    if((mensagem||'').trim() && SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE'){
+        const messageFormData = new FormData();
+        // O 'type' diz ao Google Script o que fazer com os dados
+        messageFormData.append('type', 'message'); 
+        messageFormData.append('NomeComprador', nome);
+        messageFormData.append('Mensagem', mensagem);
+        messageFormData.append('PresenteNome', currentPresent.nome);
+
+        try {
+            await fetch(SCRIPT_URL, { // Usa a mesma SCRIPT_URL do RSVP
+                method: 'POST',
+                body: messageFormData,
+                mode: 'no-cors' 
+            });
+            console.log('Mensagem de presente enviada com sucesso para o Google Sheets.');
+        } catch (error) {
+            console.error('Erro ao enviar mensagem de presente para o Google Sheets:', error);
+        }
+    }
+    // Fim da nova lógica de envio
+
+    elements.checkoutModal?.classList.add('hidden'); 
+    elements.successModal?.classList.remove('hidden'); 
+    elements.checkoutForm?.reset(); 
+    currentPresent=null; 
+    renderPresentes();
 });
+
+
+// ================== LÓGICA DO RSVP ==================
+
+elements.rsvpForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = elements.guestName?.value.trim();
+    const count = parseInt(elements.guestCount?.value, 10);
+    const message = elements.guestMessage?.value.trim() || 'Sem mensagem.';
+
+    if (!name || count < 1 || isNaN(count)) {
+        elements.rsvpMessage.textContent = 'Por favor, preencha seu nome e o número de convidados corretamente.';
+        elements.rsvpMessage.className = 'help-text text-center rsvp-error';
+        return;
+    }
+    
+    if (SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+        elements.rsvpMessage.textContent = '❌ Erro: O SCRIPT_URL não foi configurado. Configure o Google Script primeiro.';
+        elements.rsvpMessage.className = 'help-text text-center rsvp-error';
+        return;
+    }
+
+
+    elements.rsvpSubmitBtn.textContent = 'Enviando...';
+    elements.rsvpSubmitBtn.disabled = true;
+    elements.rsvpMessage.textContent = '';
+    elements.rsvpMessage.className = 'help-text text-center';
+    
+    // Prepara os dados do formulário para o Google Script
+    const formData = new FormData();
+    // Os nomes 'Nome', 'Contagem', 'Mensagem' DEVEM CORRESPONDER aos campos que criamos no Google Sheet (Passo 2)
+    formData.append('type', 'rsvp'); // Indica ao Script que esta é uma requisição RSVP
+    formData.append('Nome', name);
+    formData.append('Contagem', count);
+    formData.append('Mensagem', message);
+    
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: formData,
+            mode: 'no-cors' // Necessário para a comunicação simples com o Google Script
+        });
+
+        elements.rsvpMessage.textContent = '✅ Presença confirmada com sucesso! Obrigado!';
+        elements.rsvpMessage.className = 'help-text text-center rsvp-success';
+        elements.rsvpForm.reset();
+
+    } catch (error) {
+        console.error('Erro de submissão:', error);
+        elements.rsvpMessage.textContent = `❌ Houve um erro. Verifique a URL do Script.`;
+        elements.rsvpMessage.className = 'help-text text-center rsvp-error';
+    } finally {
+        elements.rsvpSubmitBtn.textContent = 'Confirmar Presença';
+        elements.rsvpSubmitBtn.disabled = false;
+    }
+});
+
 
 // Login/Logout
 elements.loginBtn?.addEventListener('click',(e)=>{ e.preventDefault(); elements.loginModal?.classList.remove('hidden'); });
@@ -202,7 +307,16 @@ function updateMessagesList(){ if(!elements.messagesList) return; if(APP_DATA.me
 
 function updateCategoryChart(){ if(!elements.categoryChart) return; const ctx=elements.categoryChart.getContext('2d'); const cat={}; const colors=['#1FB8CD','#FFC185','#B4413C','#ECEBD5','#5D878F','#E91E63','#8E24AA']; APP_DATA.transacoes.forEach(t=>{ const p=APP_DATA.presentes.find(x=>x.id===t.presenteId); if(p) cat[p.categoria]=(cat[p.categoria]||0)+t.valor; }); const labels=Object.keys(cat); const data=Object.values(cat); if(categoryChart) categoryChart.destroy(); if(labels.length===0){ categoryChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nenhum dado'],datasets:[{data:[1],backgroundColor:['#f0f0f0'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}); return;} categoryChart=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,font:{size:12}}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${formatCurrency(ctx.raw)}`}}}}}); }
 
-window.addEventListener('click',(e)=>{ if(e.target===elements.checkoutModal){ elements.checkoutModal.classList.add('hidden'); currentPresent=null; } if(e.target===elements.loginModal) elements.loginModal.classList.add('hidden'); if(e.target===elements.successModal) elements.successModal.classList.add('hidden'); });
+window.addEventListener('click',(e)=>{ 
+  if(e.target===elements.checkoutModal){ elements.checkoutModal.classList.add('hidden'); currentPresent=null; } 
+  if(e.target===elements.loginModal) elements.loginModal.classList.add('hidden'); 
+  if(e.target===elements.successModal) elements.successModal.classList.add('hidden'); 
+});
 
-function init(){ updateCountdown(); setInterval(updateCountdown,1000); renderPresentes(); }
+function init(){ 
+  updateCountdown(); 
+  setInterval(updateCountdown,1000); 
+  renderPresentes(); 
+}
+
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
