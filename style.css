@@ -53,6 +53,45 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .historia{padding:68px 0;background:#fff}
 .presentes{padding:68px 0;background:var(--wedding-pearl)}
 
+/* Estilo para a nova seção RSVP */
+.rsvp {
+    padding: 68px 0;
+    background: #fdf6f7; /* Um tom suave de rosa claro */
+}
+
+.rsvp-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 24px;
+    background: #fff;
+    border: 2px solid var(--contrast-border);
+    border-radius: 18px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.08);
+}
+
+.form-actions--single {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rsvp-success {
+    color: var(--wedding-secondary);
+    background: rgba(142, 36, 170, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--wedding-secondary);
+}
+
+.rsvp-error {
+    color: var(--wedding-primary);
+    background: rgba(233, 30, 99, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--wedding-primary);
+}
+
+
 /* Filtros */
 .filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:0 auto 28px;max-width:860px}
 .form-label{display:block;margin-bottom:6px;font-weight:600;color:var(--contrast-black)}
