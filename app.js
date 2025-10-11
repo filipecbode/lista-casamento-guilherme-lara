@@ -1,3 +1,5 @@
+// CÓDIGO APP.JS COMPLETO (COM AJUSTE DE NOME DE PRESENTE E NOVO URL)
+
 // ================== Dados da aplicação ==================
 const APP_DATA = {
   noivos: {
@@ -223,7 +225,7 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
     transactionFormData.append('Email', email);
     transactionFormData.append('Telefone', telefone);
     transactionFormData.append('Mensagem', mensagem);
-    transactionFormData.append('PresenteNome', currentPresent.nome);
+    transactionFormData.append('PresenteNome', currentPresent.nome); // Enviando o nome do presente
     transactionFormData.append('Quantidade', qty);
     transactionFormData.append('ValorTotal', valorTotal);
 
@@ -332,9 +334,12 @@ elements.logoutBtn?.addEventListener('click',()=>{ isLoggedIn=false; hideDashboa
 
 // Funções do Dashboard
 async function showDashboard(){ 
+  // Ocultar seções da página inicial quando o noivo logar
   document.querySelector('.hero')?.style.setProperty('display','none'); 
   document.querySelector('.historia')?.style.setProperty('display','none'); 
+  // Removido .rsvp para não haver conflito, mas a regra CSS já resolve isso.
   document.querySelector('.presentes')?.style.setProperty('display','none'); 
+  
   elements.dashboard?.classList.remove('hidden'); 
   
   // NOVA FUNÇÃO: Carregar todos os dados antes de atualizar o dashboard
@@ -342,7 +347,13 @@ async function showDashboard(){
   updateDashboard(); 
 }
 
-function hideDashboard(){ elements.dashboard?.classList.add('hidden'); document.querySelector('.hero')?.style.removeProperty('display'); document.querySelector('.historia')?.style.removeProperty('display'); document.querySelector('.presentes')?.style.removeProperty('display'); }
+function hideDashboard(){ 
+    elements.dashboard?.classList.add('hidden'); 
+    // Mostrar seções da página inicial ao deslogar
+    document.querySelector('.hero')?.style.removeProperty('display'); 
+    document.querySelector('.historia')?.style.removeProperty('display'); 
+    document.querySelector('.presentes')?.style.removeProperty('display'); 
+}
 
 // NOVO: Carrega TODOS os dados do Google Sheets (Meta, Transações, RSVPs)
 async function loadAllDataFromScript() {
@@ -357,7 +368,8 @@ async function loadAllDataFromScript() {
         if (data && Array.isArray(data.transacoes)) {
             APP_DATA.transacoes = data.transacoes.map(t => ({
                 id: Date.parse(t.data) || Date.now(),
-                presenteNome: t.presenteName,
+                // 🚨 CORREÇÃO AQUI: Usando t.presenteNome
+                presenteNome: t.presenteNome, 
                 valor: t.valorTotal,
                 quantidade: t.quantidade,
                 comprador: t.nomeComprador,
@@ -434,7 +446,7 @@ function updateDashboard(){
     updateDashboardProgress(totalArrecadado, APP_DATA.noivos.meta); 
     updateTransactionsList(); 
     updateMessagesList(); 
-    updateRsvpList(); // Novo
+    updateRsvpList(); 
     updateCategoryChart();
     renderPresentes(); // Atualiza a lista de presentes (cotas) na tela principal
 }
@@ -506,7 +518,7 @@ function updateCategoryChart(){
 window.addEventListener('click',(e)=>{ 
   if(e.target===elements.checkoutModal){ elements.checkoutModal.classList.add('hidden'); currentPresent=null; } 
   if(e.target===elements.loginModal) elements.loginModal.classList.add('hidden'); 
-  if(e.target===elements.successModal) elements.classList.add('hidden'); 
+  if(e.target===elements.successModal) elements.successModal.classList.add('hidden'); 
 });
 
 function init(){ 
