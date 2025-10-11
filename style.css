@@ -51,6 +51,13 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .section-header h2{font-family:var(--font-wedding);font-size:2.4rem;background:linear-gradient(135deg,var(--wedding-primary),var(--wedding-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .section-header p{color:var(--contrast-dark-gray)}
 .historia{padding:68px 0;background:#fff}
+.historia-intro { /* Novo estilo para a frase "Um pouquinho sobre nós…" */
+  text-align: center;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--wedding-secondary);
+  margin-bottom: 8px; 
+}
 .presentes{padding:68px 0;background:var(--wedding-pearl)}
 
 /* Estilo para a nova seção RSVP */
