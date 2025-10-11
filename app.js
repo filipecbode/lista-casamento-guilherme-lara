@@ -97,7 +97,7 @@ const elements = {
   buyerPhone: document.getElementById('buyerPhone'),
   buyerMessage: document.getElementById('buyerMessage'),
   
-  // NOVOS ELEMENTOS DO RSVP
+  // ELEMENTOS DO RSVP
   rsvpForm: document.getElementById('rsvpForm'),
   rsvpSubmitBtn: document.getElementById('rsvpSubmitBtn'),
   rsvpMessage: document.getElementById('rsvpMessage'),
@@ -177,15 +177,17 @@ window.openCheckoutModal=openCheckoutModal;
   });
 });
 
-// ⚠️ SUBSTITUA ESTA URL PELA QUE VOCÊ GERARÁ NO GOOGLE APPS SCRIPT (PASSO 2)
-const SCRIPT_URL = 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI'; 
+// -----------------------------------------------------------
+// 🚨 URL CORRETO DO GOOGLE APPS SCRIPT (APLICATIVO DA WEB) 🚨
+// -----------------------------------------------------------
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzuPm58g8DQtFbsKIgti-u5AI3byVHLnhHhogt9Cau2ZWliVtkJXokM8YknNBpF0ZXZ/exec'; 
 
 // Submit (INTEGRAÇÃO REAL de Transação/Mensagem)
 elements.checkoutForm?.addEventListener('submit', async (e) => { 
     e.preventDefault(); 
     if(!currentPresent) return;
 
-    // Lógica de simulação da compra
+    // Lógica de simulação da compra (mantida para o dashboard local)
     const rem=getRemaining(currentPresent); 
     const qty=Math.min(Math.max(parseInt(elements.shareQty?.value||'1',10),1),rem);
     const nome=elements.buyerName?.value; 
@@ -198,30 +200,28 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
     APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:valorTotal,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
     if((mensagem||'').trim()) APP_DATA.mensagens.push({id:Date.now()+1,nome, mensagem, data:new Date().toISOString()});
 
-    // --- NOVA LÓGICA DE ENVIO DA TRANSAÇÃO PARA O GOOGLE SHEETS ---
-    if(SCRIPT_URL !== 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI'){
-        const transactionFormData = new FormData();
-        transactionFormData.append('type', 'transaction'); 
-        transactionFormData.append('NomeComprador', nome);
-        transactionFormData.append('Email', email);
-        transactionFormData.append('Telefone', telefone);
-        transactionFormData.append('Mensagem', mensagem);
-        transactionFormData.append('PresenteNome', currentPresent.nome);
-        transactionFormData.append('Quantidade', qty);
-        transactionFormData.append('ValorTotal', valorTotal);
+    // --- LÓGICA DE ENVIO DA TRANSAÇÃO PARA O GOOGLE SHEETS ---
+    const transactionFormData = new FormData();
+    transactionFormData.append('type', 'transaction'); 
+    transactionFormData.append('NomeComprador', nome);
+    transactionFormData.append('Email', email);
+    transactionFormData.append('Telefone', telefone);
+    transactionFormData.append('Mensagem', mensagem);
+    transactionFormData.append('PresenteNome', currentPresent.nome);
+    transactionFormData.append('Quantidade', qty);
+    transactionFormData.append('ValorTotal', valorTotal);
 
-        try {
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: transactionFormData,
-                mode: 'no-cors' 
-            });
-            console.log('Transação enviada com sucesso para o Google Sheets.');
-        } catch (error) {
-            console.error('Erro ao enviar transação para o Google Sheets:', error);
-        }
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: transactionFormData,
+            mode: 'no-cors' 
+        });
+        console.log('Transação enviada com sucesso para o Google Sheets.');
+    } catch (error) {
+        console.error('Erro ao enviar transação para o Google Sheets:', error);
     }
-    // Fim da nova lógica de envio
+    // Fim da lógica de envio
 
     elements.checkoutModal?.classList.add('hidden'); 
     elements.successModal?.classList.remove('hidden'); 
@@ -246,12 +246,6 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
         elements.rsvpMessage.className = 'help-text text-center rsvp-error';
         return;
     }
-    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') {
-        elements.rsvpMessage.textContent = '❌ Erro: O SCRIPT_URL não foi configurado. Configure o Google Script primeiro.';
-        elements.rsvpMessage.className = 'help-text text-center rsvp-error';
-        return;
-    }
-
 
     elements.rsvpSubmitBtn.textContent = 'Enviando...';
     elements.rsvpSubmitBtn.disabled = true;
@@ -298,19 +292,17 @@ async function showDashboard(){
   document.querySelector('.presentes')?.style.setProperty('display','none'); 
   elements.dashboard?.classList.remove('hidden'); 
   
-  // NOVA FUNÇÃO: Carregar meta antes de atualizar o dashboard
+  // Carregar meta antes de atualizar o dashboard
   await loadMetaFromScript(); 
   updateDashboard(); 
 }
 
 function hideDashboard(){ elements.dashboard?.classList.add('hidden'); document.querySelector('.hero')?.style.removeProperty('display'); document.querySelector('.historia')?.style.removeProperty('display'); document.querySelector('.presentes')?.style.removeProperty('display'); }
 
-// NOVA FUNÇÃO: Carrega a Meta do Google Sheets
+// Carrega a Meta do Google Sheets
 async function loadMetaFromScript() {
-    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') return;
-    
     try {
-        // Envia um GET para o Script
+        // Envia um GET para o Script (doGet)
         const response = await fetch(SCRIPT_URL); 
         const data = await response.json();
         
@@ -323,17 +315,10 @@ async function loadMetaFromScript() {
     }
 }
 
-// NOVO MANIPULADOR: Salva a Meta no Google Sheets
+// Salva a Meta no Google Sheets
 document.getElementById('saveMeta')?.addEventListener('click', async ()=>{ 
   const v=parseFloat(elements.metaInput?.value); 
   if(v&&v>0){ 
-    
-    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') {
-      APP_DATA.noivos.meta=v;
-      updateDashboard();
-      alert('Meta atualizada LOCALMENTE! Configure o SCRIPT_URL para salvar no Google Sheets.');
-      return;
-    }
     
     // Envia o novo valor para o Script
     const metaFormData = new FormData();
@@ -347,6 +332,7 @@ document.getElementById('saveMeta')?.addEventListener('click', async ()=>{
         mode: 'no-cors'
       });
       
+      // Assume-se sucesso (devido ao modo 'no-cors')
       APP_DATA.noivos.meta=v;
       updateDashboard(); 
       alert('Meta atualizada com sucesso e salva no Google Sheets!'); 
@@ -366,8 +352,6 @@ function updateDashboard(){ const total=APP_DATA.transacoes.reduce((s,t)=>s+t.va
   updateDashboardProgress(); updateTransactionsList(); updateMessagesList(); updateCategoryChart(); }
 
 function updateDashboardProgress(){ const total=APP_DATA.transacoes.reduce((s,t)=>s+t.valor,0); const pct=(total/APP_DATA.noivos.meta)*100; elements.progressFillDashboard.style.width=`${Math.min(pct,100)}%`; elements.progressTextDashboard.textContent=`${formatCurrency(total)} de ${formatCurrency(APP_DATA.noivos.meta)}`; elements.progressPercentageDashboard.textContent=`${(pct||0).toFixed(1)}%`; }
-
-document.getElementById('saveMeta')?.addEventListener('click',()=>{ const v=parseFloat(elements.metaInput?.value); if(v&&v>0){ APP_DATA.noivos.meta=v; updateDashboard(); alert('Meta atualizada com sucesso!'); } else { alert('Por favor, insira um valor válido para a meta.'); } });
 
 function updateTransactionsList(){ if(!elements.transactionsList) return; if(APP_DATA.transacoes.length===0){ elements.transactionsList.innerHTML='<p class="no-transactions">Nenhuma transação ainda</p>'; return; } const sorted=[...APP_DATA.transacoes].sort((a,b)=> new Date(b.data)-new Date(a.data)); elements.transactionsList.innerHTML=sorted.map(t=>`<div class="transaction-item"><div class="transaction-info"><h5>${t.presenteNome} ${t.quantidade?`• ${t.quantidade} cota(s)`:''}</h5><p>${t.comprador} • ${formatDate(t.data)}</p></div><div class="transaction-amount">${formatCurrency(t.valor)}</div></div>`).join(''); }
 
