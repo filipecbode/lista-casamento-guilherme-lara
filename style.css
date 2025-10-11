@@ -60,7 +60,7 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 }
 .presentes{padding:68px 0;background:var(--wedding-pearl)}
 
-/* Estilo para a nova seção RSVP */
+/* Estilo para a seção RSVP */
 .rsvp {
     padding: 68px 0;
     background: #fdf6f7; /* Um tom suave de rosa claro */
@@ -161,7 +161,7 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .dashboard-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
 .card{background:#fff;border:2px solid var(--contrast-border);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.06)}
 .card__body{padding:18px}
-.transactions-list,.messages-list{max-height:300px;overflow:auto}
+.transactions-list,.messages-list,.rsvp-list{max-height:300px;overflow:auto} /* Adicionado .rsvp-list */
 .transaction-item,.message-item{padding:12px;border-bottom:1px solid var(--contrast-border);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .transaction-info h5{margin:0 0 4px}
 .transaction-info p{margin:0;color:var(--contrast-medium-gray);font-size:.92rem}
@@ -171,6 +171,29 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .message-name{font-weight:700}
 .message-date{color:var(--contrast-medium-gray);font-size:.85rem}
 .message-text{width:100%;background:rgba(233,30,99,.08);border:1px solid var(--contrast-border);border-radius:12px;padding:10px}
+/* Novo estilo para lista de RSVP */
+.rsvp-item {
+    padding: 12px;
+    border-bottom: 1px solid var(--contrast-border);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.rsvp-info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.rsvp-name { margin: 0; font-weight: 600; }
+.rsvp-date { color: var(--contrast-medium-gray); font-size: 0.85rem; }
+.rsvp-message {
+    font-style: italic;
+    color: var(--contrast-dark-gray);
+    font-size: 0.9rem;
+    padding-left: 10px;
+    border-left: 2px solid var(--wedding-primary);
+}
+
 
 /* Footer */
 .footer{background:var(--wedding-secondary);color:#fff;text-align:center;padding:32px 0}
