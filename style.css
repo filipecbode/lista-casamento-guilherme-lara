@@ -51,7 +51,7 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .section-header h2{font-family:var(--font-wedding);font-size:2.4rem;background:linear-gradient(135deg,var(--wedding-primary),var(--wedding-secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
 .section-header p{color:var(--contrast-dark-gray)}
 .historia{padding:68px 0;background:#fff}
-.historia-intro { /* Novo estilo para a frase "Um pouquinho sobre nós…" */
+.historia-intro { 
   text-align: center;
   font-style: italic;
   font-weight: 500;
@@ -63,7 +63,7 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 /* Estilo para a seção RSVP */
 .rsvp {
     padding: 68px 0;
-    background: #fdf6f7; /* Um tom suave de rosa claro */
+    background: #fdf6f7; 
 }
 
 .rsvp-form {
@@ -97,6 +97,17 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
     border-radius: 8px;
     border: 1px solid var(--wedding-primary);
 }
+
+
+/* --- CORREÇÃO: Ocultar RSVP e Presentes quando Dashboard estiver ativo --- */
+
+/* Oculta as seções RSVP e PRESENTES quando o dashboard está visível (noivo logado) */
+.dashboard:not(.hidden) ~ .rsvp,
+.dashboard:not(.hidden) ~ .presentes {
+    display: none !important;
+}
+
+/* ----------------------------------------------------------------------- */
 
 
 /* Filtros */
@@ -161,7 +172,7 @@ body{font-family:var(--font-body);line-height:1.6;color:var(--contrast-black);ba
 .dashboard-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
 .card{background:#fff;border:2px solid var(--contrast-border);border-radius:18px;box-shadow:0 10px 40px rgba(0,0,0,.06)}
 .card__body{padding:18px}
-.transactions-list,.messages-list,.rsvp-list{max-height:300px;overflow:auto} /* Adicionado .rsvp-list */
+.transactions-list,.messages-list,.rsvp-list{max-height:300px;overflow:auto} 
 .transaction-item,.message-item{padding:12px;border-bottom:1px solid var(--contrast-border);display:flex;align-items:center;justify-content:space-between;gap:8px}
 .transaction-info h5{margin:0 0 4px}
 .transaction-info p{margin:0;color:var(--contrast-medium-gray);font-size:.92rem}
