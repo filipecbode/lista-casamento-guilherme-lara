@@ -16,17 +16,17 @@ const APP_DATA = {
     {"id":5, "nome":"Drinks", "preco":95, "cotas":2, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/05.jpg"},
     {"id":6, "nome":"Spa day", "preco":240, "cotas":1, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/06.jpg"},
     {"id":7, "nome":"Ingresso de cinema", "preco":89, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/07.jpg"},
-    {"id":8, "nome":"1 diária", "preco":200, "cotas":2, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/08.jpg"},
+    {"id":8, "nome":"1 diária", "preco":200, "cotas":5, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/08.jpg"}, // COTA ALTERADA: 2 -> 5
     {"id":9, "nome":"2 diárias", "preco":350, "cotas":2, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/09.jpg"},
     {"id":10, "nome":"Limpeza de pele", "preco":240, "cotas":1, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/10.jpg"},
-    {"id":11, "nome":"Cortar o cabelo do noivo", "preco":2000, "cotas":5, "compradas":0, "categoria":"Preparativos dos Noivos", "imagem":"assets/gifts/11.jpg"},
+    {"id":11, "nome":"Cortar o cabelo do noivo", "preco":2000, "cotas":4, "compradas":0, "categoria":"Preparativos dos Noivos", "imagem":"assets/gifts/11.jpg", "observacao":"O corte só será realizado se todas as cotas forem vendidas."}, // COTA ALTERADA: 5 -> 4
     {"id":12, "nome":"Vodka sem metanol", "preco":200, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/12.jpg"},
     {"id":13, "nome":"Vodka com metanol", "preco":250, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/13.jpg"},
     {"id":14, "nome":"Aulas de valsa", "preco":210, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/14.jpg"},
     {"id":15, "nome":"Passeio a cavalo", "preco":180, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/15.jpg"},
     {"id":16, "nome":"Passeio de jet ski", "preco":140, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/16.jpg"},
     {"id":17, "nome":"Mergulho", "preco":280, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/17.jpg"},
-    {"id":18, "nome":"Ajuda antistress da noiva", "preco":500, "cotas":2, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/18.jpg"},
+    {"id":18, "nome":"Ajuda antistress da noiva", "preco":500, "cotas":5, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/18.jpg"}, // COTA ALTERADA: 2 -> 5
     {"id":19, "nome":"Noite de fondue", "preco":190, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/19.jpg"},
     {"id":20, "nome":"Espumante no quarto", "preco":90, "cotas":1, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/20.jpg"},
     {"id":21, "nome":"Salto de paraquedas", "preco":650, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/21.jpg"},
@@ -43,7 +43,7 @@ const APP_DATA = {
   ],
   transacoes: [],
   mensagens: [],
-  rsvps: [] 
+  rsvps: [] // Novo array para guardar a lista de convidados
 };
 
 // Estado/Elementos
@@ -140,6 +140,8 @@ function renderPresentes(presentes=APP_DATA.presentes){
     const soldOut=isSoldOut(p);
     const card=document.createElement('div'); card.className=`presente-card ${soldOut?'comprado':''}`;
     const emoji=categoryEmojis[p.categoria]||'🎁';
+    const observacaoHtml = p.observacao ? `<small class="help-text" style="color:var(--wedding-primary); margin-top: 5px;">${p.observacao}</small>` : '';
+
     card.innerHTML=`
       <div class="presente-image"><img src="${p.imagem}" alt="${p.nome}" loading="lazy" onerror="this.onerror=null;this.src='assets/gifts/placeholder.jpg';" /></div>
       <div class="presente-info">
@@ -147,6 +149,7 @@ function renderPresentes(presentes=APP_DATA.presentes){
         <h3 class="presente-nome">${p.nome}</h3>
         <div class="presente-preco">${formatCurrency(p.preco)} <small>/ cota</small></div>
         <div class="cotas-info">Restam <strong>${getRemaining(p)}</strong> de ${p.cotas} cotas</div>
+        ${observacaoHtml}
         <button class="btn-presentear" ${soldOut?'disabled':''} onclick="openCheckoutModal(${p.id})">${soldOut?'Esgotado':'💝 Presentear cotas'}</button>
       </div>`;
     elements.presentesGrid.appendChild(card);
@@ -166,7 +169,20 @@ elements.priceFilter?.addEventListener('change', filterPresentes);
 
 function openCheckoutModal(id){
   const p=APP_DATA.presentes.find(x=>x.id===id); if(!p||isSoldOut(p)) return; currentPresent=p;
-  if(elements.presentInfo){ elements.presentInfo.innerHTML=`<h4>${p.nome}</h4><div class="price">${formatCurrency(p.preco)} <small>/ cota</small></div><div class="help-text">${p.cotas} cotas de ${formatCurrency(p.preco)} (valor total: ${formatCurrency(p.cotas*p.preco)}).<br>Você poderá escolher quantas cotas deseja presentear.</div>`; }
+  // Adiciona a observação na modal de checkout se ela existir
+  const observacaoModalHtml = p.observacao ? `<p class="help-text" style="color:var(--wedding-secondary); margin-top: 5px;">* ${p.observacao}</p>` : '';
+
+  if(elements.presentInfo){ 
+    elements.presentInfo.innerHTML=`
+      <h4>${p.nome}</h4>
+      <div class="price">${formatCurrency(p.preco)} <small>/ cota</small></div>
+      <div class="help-text">
+          ${p.cotas} cotas de ${formatCurrency(p.preco)} (valor total: ${formatCurrency(p.cotas*p.preco)}).
+          <br>Você poderá escolher quantas cotas deseja presentear.
+      </div>
+      ${observacaoModalHtml}
+    `; 
+  }
   const rem=getRemaining(p); if(elements.shareQty){ elements.shareQty.min=1; elements.shareQty.max=Math.max(1,rem); elements.shareQty.value=1; elements.shareQty.oninput=()=>{ const q=Math.min(Math.max(parseInt(elements.shareQty.value||'1',10),1),rem); elements.shareQty.value=q; if(elements.checkoutTotal) elements.checkoutTotal.textContent=formatCurrency(q*p.preco); }; elements.shareQty.dispatchEvent(new Event('input')); }
   if(elements.sharesRemaining) elements.sharesRemaining.textContent=`Restam ${rem} de ${p.cotas} cotas para este presente.`;
   elements.checkoutModal?.classList.remove('hidden');
