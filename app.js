@@ -16,17 +16,17 @@ const APP_DATA = {
     {"id":5, "nome":"Drinks", "preco":95, "cotas":2, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/05.jpg"},
     {"id":6, "nome":"Spa day", "preco":240, "cotas":1, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/06.jpg"},
     {"id":7, "nome":"Ingresso de cinema", "preco":89, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/07.jpg"},
-    {"id":8, "nome":"1 diária", "preco":200, "cotas":5, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/08.jpg"}, // COTA ALTERADA: 2 -> 5
+    {"id":8, "nome":"1 diária", "preco":200, "cotas":5, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/08.jpg"}, 
     {"id":9, "nome":"2 diárias", "preco":350, "cotas":2, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/09.jpg"},
     {"id":10, "nome":"Limpeza de pele", "preco":240, "cotas":1, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/10.jpg"},
-    {"id":11, "nome":"Cortar o cabelo do noivo", "preco":2000, "cotas":4, "compradas":0, "categoria":"Preparativos dos Noivos", "imagem":"assets/gifts/11.jpg", "observacao":"O corte só será realizado se todas as cotas forem vendidas."}, // COTA ALTERADA: 5 -> 4
+    {"id":11, "nome":"Cortar o cabelo do noivo", "preco":2000, "cotas":4, "compradas":0, "categoria":"Preparativos dos Noivos", "imagem":"assets/gifts/11.jpg", "observacao":"O corte só será realizado se todas as cotas forem vendidas."}, 
     {"id":12, "nome":"Vodka sem metanol", "preco":200, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/12.jpg"},
     {"id":13, "nome":"Vodka com metanol", "preco":250, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/13.jpg"},
     {"id":14, "nome":"Aulas de valsa", "preco":210, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/14.jpg"},
     {"id":15, "nome":"Passeio a cavalo", "preco":180, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/15.jpg"},
     {"id":16, "nome":"Passeio de jet ski", "preco":140, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/16.jpg"},
     {"id":17, "nome":"Mergulho", "preco":280, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/17.jpg"},
-    {"id":18, "nome":"Ajuda antistress da noiva", "preco":500, "cotas":5, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/18.jpg"}, // COTA ALTERADA: 2 -> 5
+    {"id":18, "nome":"Ajuda antistress da noiva", "preco":500, "cotas":5, "compradas":0, "categoria":"Cuidados & Bem-estar", "imagem":"assets/gifts/18.jpg"}, 
     {"id":19, "nome":"Noite de fondue", "preco":190, "cotas":1, "compradas":0, "categoria":"Gastronomia & Bebidas", "imagem":"assets/gifts/19.jpg"},
     {"id":20, "nome":"Espumante no quarto", "preco":90, "cotas":1, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/20.jpg"},
     {"id":21, "nome":"Salto de paraquedas", "preco":650, "cotas":1, "compradas":0, "categoria":"Experiências a Dois", "imagem":"assets/gifts/21.jpg"},
@@ -43,7 +43,7 @@ const APP_DATA = {
   ],
   transacoes: [],
   mensagens: [],
-  rsvps: [] // Novo array para guardar a lista de convidados
+  rsvps: [] 
 };
 
 // Estado/Elementos
@@ -105,7 +105,7 @@ const elements = {
   guestName: document.getElementById('guestName'),
   guestCount: document.getElementById('guestCount'),
   guestMessage: document.getElementById('guestMessage'),
-  rsvpList: document.getElementById('rsvpList') // Novo elemento da lista
+  rsvpList: document.getElementById('rsvpList') 
 };
 
 // Utils
@@ -201,7 +201,7 @@ window.openCheckoutModal=openCheckoutModal;
 // -----------------------------------------------------------
 // 🚨 URL CORRETO DO GOOGLE APPS SCRIPT (APLICATIVO DA WEB) 🚨
 // -----------------------------------------------------------
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzOTOGIZvH4YAz8vlQMiPOuG7Y_Fv9yN-6Nxiiq4Zudv0J3bQznEN_4jpHhXgG7vj3f/exec'; 
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbze2baFH2d1EJKU4-WPpgeUdy9WDovC-z6Ag9QfPuolUNRFlE1BKZb4xsGvYLJLrs3q/exec'; 
 
 // Submit (INTEGRAÇÃO REAL de Transação/Mensagem)
 elements.checkoutForm?.addEventListener('submit', async (e) => { 
@@ -305,8 +305,7 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
         elements.rsvpForm.reset();
 
     } catch (error) {
-        console.error('Erro de submissão do RSVP:', error);
-        elements.rsvpMessage.textContent = `❌ Houve um erro. Verifique a URL do Script.`;
+        elements.rsvpMessage.textContent = `❌ Houve um erro. Verifique a URL do Script e a Planilha.`;
         elements.rsvpMessage.className = 'help-text text-center rsvp-error';
     } finally {
         elements.rsvpSubmitBtn.textContent = 'Confirmar Presença';
@@ -358,7 +357,7 @@ async function loadAllDataFromScript() {
         if (data && Array.isArray(data.transacoes)) {
             APP_DATA.transacoes = data.transacoes.map(t => ({
                 id: Date.parse(t.data) || Date.now(),
-                presenteNome: t.presenteNome,
+                presenteNome: t.presenteName,
                 valor: t.valorTotal,
                 quantidade: t.quantidade,
                 comprador: t.nomeComprador,
@@ -376,14 +375,15 @@ async function loadAllDataFromScript() {
             APP_DATA.rsvps = data.rsvps;
         }
 
-        // Atualiza a contagem de cotas compradas nos presentes (localmente)
-        APP_DATA.presentes.forEach(p => p.compradas = 0); // Zera
-        APP_DATA.transacoes.forEach(t => {
-            const presente = APP_DATA.presentes.find(p => p.nome === t.presenteNome);
-            if (presente) {
-                presente.compradas += t.quantidade;
-            }
-        });
+        // 🚨 CÁLCULO CORRIGIDO DE COTAS COMPRADAS: Usa o objeto cotasCompradas do Script
+        if (data && data.cotasCompradas) {
+            APP_DATA.presentes.forEach(p => {
+                p.compradas = data.cotasCompradas[p.nome] || 0;
+            });
+        } else {
+             // Fallback para o caso de o Script não retornar cotasCompradas (inicialização)
+            APP_DATA.presentes.forEach(p => p.compradas = 0); 
+        }
         
     } catch (error) {
         console.warn('Não foi possível carregar os dados completos do Google Sheets.', error);
@@ -491,7 +491,7 @@ function updateCategoryChart(){
     const cat={}; 
     const colors=['#1FB8CD','#FFC185','#B4413C','#ECEBD5','#5D878F','#E91E63','#8E24AA']; 
     APP_DATA.transacoes.forEach(t=>{ 
-        const p=APP_DATA.presentes.find(x=>x.nome === t.presenteNome); // Busca por nome, não por ID
+        const p=APP_DATA.presentes.find(x=>x.nome === t.presenteNome); 
         if(p) cat[p.categoria]=(cat[p.categoria]||0)+t.valor; 
     }); 
     const labels=Object.keys(cat); 
@@ -506,7 +506,7 @@ function updateCategoryChart(){
 window.addEventListener('click',(e)=>{ 
   if(e.target===elements.checkoutModal){ elements.checkoutModal.classList.add('hidden'); currentPresent=null; } 
   if(e.target===elements.loginModal) elements.loginModal.classList.add('hidden'); 
-  if(e.target===elements.successModal) elements.successModal.classList.add('hidden'); 
+  if(e.target===elements.successModal) elements.classList.add('hidden'); 
 });
 
 function init(){ 
