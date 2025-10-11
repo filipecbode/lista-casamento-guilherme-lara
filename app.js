@@ -178,44 +178,47 @@ window.openCheckoutModal=openCheckoutModal;
 });
 
 // ⚠️ SUBSTITUA ESTA URL PELA QUE VOCÊ GERARÁ NO GOOGLE APPS SCRIPT (PASSO 2)
-const SCRIPT_URL = 'YOUR_GOOGLE_SCRIPT_URL_HERE'; 
+const SCRIPT_URL = 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI'; 
 
-// Submit (INTEGRAÇÃO REAL de Mensagem)
+// Submit (INTEGRAÇÃO REAL de Transação/Mensagem)
 elements.checkoutForm?.addEventListener('submit', async (e) => { 
     e.preventDefault(); 
     if(!currentPresent) return;
 
-    // Lógica do seu código para simular a compra (manter)
+    // Lógica de simulação da compra
     const rem=getRemaining(currentPresent); 
     const qty=Math.min(Math.max(parseInt(elements.shareQty?.value||'1',10),1),rem);
     const nome=elements.buyerName?.value; 
     const email=elements.buyerEmail?.value; 
     const telefone=elements.buyerPhone?.value; 
-    const mensagem=elements.buyerMessage?.value;
+    const mensagem=elements.buyerMessage?.value || 'Sem mensagem.';
+    const valorTotal = currentPresent.preco * qty;
     
     currentPresent.compradas=(currentPresent.compradas||0)+qty;
-    APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:currentPresent.preco*qty,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
-    // Seu APP_DATA continuará simulando as mensagens e transações no Dashboard
+    APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:valorTotal,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
     if((mensagem||'').trim()) APP_DATA.mensagens.push({id:Date.now()+1,nome, mensagem, data:new Date().toISOString()});
 
-    // --- NOVA LÓGICA DE ENVIO DA MENSAGEM PARA O GOOGLE SHEETS ---
-    if((mensagem||'').trim() && SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE'){
-        const messageFormData = new FormData();
-        // O 'type' diz ao Google Script o que fazer com os dados
-        messageFormData.append('type', 'message'); 
-        messageFormData.append('NomeComprador', nome);
-        messageFormData.append('Mensagem', mensagem);
-        messageFormData.append('PresenteNome', currentPresent.nome);
+    // --- NOVA LÓGICA DE ENVIO DA TRANSAÇÃO PARA O GOOGLE SHEETS ---
+    if(SCRIPT_URL !== 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI'){
+        const transactionFormData = new FormData();
+        transactionFormData.append('type', 'transaction'); 
+        transactionFormData.append('NomeComprador', nome);
+        transactionFormData.append('Email', email);
+        transactionFormData.append('Telefone', telefone);
+        transactionFormData.append('Mensagem', mensagem);
+        transactionFormData.append('PresenteNome', currentPresent.nome);
+        transactionFormData.append('Quantidade', qty);
+        transactionFormData.append('ValorTotal', valorTotal);
 
         try {
-            await fetch(SCRIPT_URL, { // Usa a mesma SCRIPT_URL do RSVP
+            await fetch(SCRIPT_URL, {
                 method: 'POST',
-                body: messageFormData,
+                body: transactionFormData,
                 mode: 'no-cors' 
             });
-            console.log('Mensagem de presente enviada com sucesso para o Google Sheets.');
+            console.log('Transação enviada com sucesso para o Google Sheets.');
         } catch (error) {
-            console.error('Erro ao enviar mensagem de presente para o Google Sheets:', error);
+            console.error('Erro ao enviar transação para o Google Sheets:', error);
         }
     }
     // Fim da nova lógica de envio
@@ -228,7 +231,7 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
 });
 
 
-// ================== LÓGICA DO RSVP ==================
+// ================== LÓGICA DO RSVP (Integração) ==================
 
 elements.rsvpForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -237,13 +240,13 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
     const count = parseInt(elements.guestCount?.value, 10);
     const message = elements.guestMessage?.value.trim() || 'Sem mensagem.';
 
+    // Validação
     if (!name || count < 1 || isNaN(count)) {
         elements.rsvpMessage.textContent = 'Por favor, preencha seu nome e o número de convidados corretamente.';
         elements.rsvpMessage.className = 'help-text text-center rsvp-error';
         return;
     }
-    
-    if (SCRIPT_URL === 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') {
         elements.rsvpMessage.textContent = '❌ Erro: O SCRIPT_URL não foi configurado. Configure o Google Script primeiro.';
         elements.rsvpMessage.className = 'help-text text-center rsvp-error';
         return;
@@ -255,19 +258,17 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
     elements.rsvpMessage.textContent = '';
     elements.rsvpMessage.className = 'help-text text-center';
     
-    // Prepara os dados do formulário para o Google Script
     const formData = new FormData();
-    // Os nomes 'Nome', 'Contagem', 'Mensagem' DEVEM CORRESPONDER aos campos que criamos no Google Sheet (Passo 2)
-    formData.append('type', 'rsvp'); // Indica ao Script que esta é uma requisição RSVP
+    formData.append('type', 'rsvp'); // Indica ao Script o que fazer
     formData.append('Nome', name);
     formData.append('Contagem', count);
     formData.append('Mensagem', message);
     
     try {
-        const response = await fetch(SCRIPT_URL, {
+        await fetch(SCRIPT_URL, {
             method: 'POST',
             body: formData,
-            mode: 'no-cors' // Necessário para a comunicação simples com o Google Script
+            mode: 'no-cors' // Necessário para a comunicação simples
         });
 
         elements.rsvpMessage.textContent = '✅ Presença confirmada com sucesso! Obrigado!';
@@ -275,7 +276,7 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
         elements.rsvpForm.reset();
 
     } catch (error) {
-        console.error('Erro de submissão:', error);
+        console.error('Erro de submissão do RSVP:', error);
         elements.rsvpMessage.textContent = `❌ Houve um erro. Verifique a URL do Script.`;
         elements.rsvpMessage.className = 'help-text text-center rsvp-error';
     } finally {
@@ -290,8 +291,75 @@ elements.loginBtn?.addEventListener('click',(e)=>{ e.preventDefault(); elements.
 document.getElementById('loginForm')?.addEventListener('submit',(e)=>{ e.preventDefault(); const pwd=elements.passwordInput?.value||''; if(pwd===APP_DATA.noivos.senha){ isLoggedIn=true; elements.loginModal?.classList.add('hidden'); showDashboard(); } else { alert('Senha incorreta!'); } elements.passwordInput.value=''; });
 elements.logoutBtn?.addEventListener('click',()=>{ isLoggedIn=false; hideDashboard(); });
 
-function showDashboard(){ document.querySelector('.hero')?.style.setProperty('display','none'); document.querySelector('.historia')?.style.setProperty('display','none'); document.querySelector('.presentes')?.style.setProperty('display','none'); elements.dashboard?.classList.remove('hidden'); updateDashboard(); }
+// Funções do Dashboard
+async function showDashboard(){ 
+  document.querySelector('.hero')?.style.setProperty('display','none'); 
+  document.querySelector('.historia')?.style.setProperty('display','none'); 
+  document.querySelector('.presentes')?.style.setProperty('display','none'); 
+  elements.dashboard?.classList.remove('hidden'); 
+  
+  // NOVA FUNÇÃO: Carregar meta antes de atualizar o dashboard
+  await loadMetaFromScript(); 
+  updateDashboard(); 
+}
+
 function hideDashboard(){ elements.dashboard?.classList.add('hidden'); document.querySelector('.hero')?.style.removeProperty('display'); document.querySelector('.historia')?.style.removeProperty('display'); document.querySelector('.presentes')?.style.removeProperty('display'); }
+
+// NOVA FUNÇÃO: Carrega a Meta do Google Sheets
+async function loadMetaFromScript() {
+    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') return;
+    
+    try {
+        // Envia um GET para o Script
+        const response = await fetch(SCRIPT_URL); 
+        const data = await response.json();
+        
+        if (data && data.meta > 0) {
+            APP_DATA.noivos.meta = data.meta;
+            console.log(`Meta carregada do Sheets: ${formatCurrency(data.meta)}`);
+        }
+    } catch (error) {
+        console.warn('Não foi possível carregar a meta do Google Sheets. Usando valor local.', error);
+    }
+}
+
+// NOVO MANIPULADOR: Salva a Meta no Google Sheets
+document.getElementById('saveMeta')?.addEventListener('click', async ()=>{ 
+  const v=parseFloat(elements.metaInput?.value); 
+  if(v&&v>0){ 
+    
+    if (SCRIPT_URL === 'SEU_URL_DO_GOOGLE_SCRIPT_AQUI') {
+      APP_DATA.noivos.meta=v;
+      updateDashboard();
+      alert('Meta atualizada LOCALMENTE! Configure o SCRIPT_URL para salvar no Google Sheets.');
+      return;
+    }
+    
+    // Envia o novo valor para o Script
+    const metaFormData = new FormData();
+    metaFormData.append('type', 'meta_update');
+    metaFormData.append('NovoValor', v);
+    
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST', // Usamos POST para enviar a atualização
+        body: metaFormData,
+        mode: 'no-cors'
+      });
+      
+      APP_DATA.noivos.meta=v;
+      updateDashboard(); 
+      alert('Meta atualizada com sucesso e salva no Google Sheets!'); 
+      
+    } catch(error) {
+      console.error('Erro ao salvar meta no Script:', error);
+      alert('Houve um erro ao salvar a meta no Google Sheets.');
+    }
+    
+  } else { 
+    alert('Por favor, insira um valor válido para a meta.'); 
+  } 
+});
 
 function updateDashboard(){ const total=APP_DATA.transacoes.reduce((s,t)=>s+t.valor,0); const qtd=APP_DATA.transacoes.length; const conv=new Set(APP_DATA.transacoes.map(t=>t.email)).size; const pct=((total/APP_DATA.noivos.meta)*100)||0;
   document.getElementById('metaInput').value=APP_DATA.noivos.meta; document.getElementById('totalArrecadado').textContent=formatCurrency(total); document.getElementById('presentesComprados').textContent=qtd; document.getElementById('totalConvidados').textContent=conv; document.getElementById('percentualMeta').textContent=`${pct.toFixed(1)}%`;
@@ -317,6 +385,7 @@ function init(){
   updateCountdown(); 
   setInterval(updateCountdown,1000); 
   renderPresentes(); 
+  loadMetaFromScript(); // Adiciona o carregamento da meta na inicialização
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
