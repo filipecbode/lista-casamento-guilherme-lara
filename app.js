@@ -43,7 +43,7 @@ const APP_DATA = {
   ],
   transacoes: [],
   mensagens: [],
-  rsvps: [] // Novo array para guardar a lista de convidados
+  rsvps: [] 
 };
 
 // Estado/Elementos
@@ -110,7 +110,6 @@ const elements = {
 
 // Utils
 const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-// Ajustado para formatar data/hora corretamente para visualização
 const formatDate = (date) => {
     const d = date instanceof Date ? date : (date ? new Date(date) : new Date());
     return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(d);
