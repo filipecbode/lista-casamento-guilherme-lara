@@ -1,242 +1,65 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lista de Casamento — Lara & Guilherme</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body id="home">
-  <nav class="navbar">
-    <div class="container nav-content">
-      <div class="nav-brand"><h2>G&amp;L</h2></div>
-      <button id="navToggle" class="nav-toggle" aria-label="Abrir menu">
-        <span></span><span></span><span></span>
-      </button>
-      <div id="navMenu" class="nav-menu">
-        <a class="nav-link" href="#home">Início</a>
-        <a class="nav-link" href="#rsvp">Presença</a>
-        <a class="nav-link" href="#presentes">Presentes</a>
-        <a class="nav-link" href="#historia">Nossa História</a>
-        <a class="nav-link" id="loginBtn" href="#">Área dos Noivos</a>
-      </div>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <div class="hero-bg"></div>
-    <div class="container hero-content">
-      <div class="hero-text">
-        <h1 class="hero-title">Lara &amp; Guilherme</h1>
-        <p class="hero-subtitle">Estamos nos casando e queremos compartilhar esse momento especial com você! Se for de sua vontade, escolha um presente e ajude a tornar essa nova fase inesquecível. 💖</p>
-        <div id="countdown" class="countdown">
-          <h3>Faltam:</h3>
-          <div class="countdown-timer">
-            <div class="countdown-item"><span id="days">0</span><label>Dias</label></div>
-            <div class="countdown-item"><span id="hours">0</span><label>Horas</label></div>
-            <div class="countdown-item"><span id="minutes">0</span><label>Min</label></div>
-            <div class="countdown-item"><span id="seconds">0</span><label>Seg</label></div>
-          </div>
-          <div class="wedding-date">29 de Novembro de 2025 às 16:00 · Horário de Brasília</div>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img class="couple-photo" src="assets/casal.png" alt="Foto do casal" />
-        <div class="hearts">💗</div>
-      </div>
-    </div>
-  </section>
-
-  <section id="historia" class="historia">
-    <div class="container historia-content">
-      <p class="historia-intro">Um pouquinho sobre nós…</p> <div class="section-header">
-        <h2>Nossa História</h2>
-        <p>“Nossa história começou onde menos esperávamos: em um simples ônibus. O acaso nos uniu, mas a sintonia de nossas almas foi imediata e a conversa fluiu como um sonho. A coragem de Guilherme deu início a tudo, e logo marcamos nosso primeiro encontro. Desde aquele dia, seguimos lado a lado, construindo um universo de carinho, parceria e sonhos compartilhados. Hoje, preparamo-nos para celebrar o nosso 'felizes para sempre' e queremos que este momento seja mágico ao lado de vocês!”</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="rsvp" class="rsvp">
-    <div class="container rsvp-content">
-        <div class="section-header">
-            <h2>Confirmação de Presença 👋</h2>
-            <p>Por favor, nos ajude a planejar melhor nosso dia especial. Confirme sua presença o quanto antes!</p>
-        </div>
-        
-        <form id="rsvpForm" class="rsvp-form">
-            <div class="form-group">
-                <label class="form-label" for="guestName">Seu Nome Completo *</label>
-                <input id="guestName" class="form-control" type="text" placeholder="Ex: Maria da Silva" required />
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="guestCount">Número de Pessoas na Confirmação *</label>
-                <input id="guestCount" class="form-control" type="number" min="1" value="1" required />
-                <small class="help-text">Inclua você e seus acompanhantes nesta contagem.</small>
-            </div>
-            <div class="form-group">
-                <label class="form-label" for="guestMessage">Mensagem Opcional</label>
-                <textarea id="guestMessage" class="form-control" rows="2" placeholder="Deixe um recadinho! Ex: Mal podemos esperar!"></textarea>
-            </div>
-            <div class="form-actions form-actions--single">
-                <button type="submit" id="rsvpSubmitBtn" class="btn btn--primary">
-                    Confirmar Presença
-                </button>
-            </div>
-            <div id="rsvpMessage" class="help-text text-center" style="margin-top: 15px; font-weight: 600;"></div>
-        </form>
-    </div>
-  </section>
-
-  <section id="presentes" class="presentes">
+<section id="dashboard" class="dashboard hidden">
     <div class="container">
-      <div class="section-header">
-        <h2>Lista de Presentes 🎁</h2>
-        <p>Escolha um presente especial. Cada item possui cotas — você pode presentear 1 ou mais cotas.</p>
+      <div class="dashboard-header mb-48">
+        <h1>Área de Gerenciamento do Casamento</h1>
+        <button id="logoutBtn" class="btn btn--secondary">Sair</button>
       </div>
 
-      <div class="filters">
-        <input id="searchInput" class="form-control" type="text" placeholder="Buscar presente…" />
-        <select id="categoryFilter" class="form-control">
-          <option value="">Todas as categorias</option>
-          <option>Gastronomia & Bebidas</option>
-          <option>Experiências a Dois</option>
-          <option>Viagem & Hospedagem</option>
-          <option>Cuidados & Bem-estar</option>
-          <option>Preparativos dos Noivos</option>
-          <option>Transporte & Logística</option>
-          <option>Extras & Lembrancinhas</option>
-        </select>
-        <select id="priceFilter" class="form-control">
-          <option value="">Todos os preços</option>
-          <option value="0-500">Até R$ 500</option>
-          <option value="500-1000">R$ 500 - R$ 1.000</option>
-          <option value="1000-2000">R$ 1.000 - R$ 2.000</option>
-          <option value="2000+">Acima de R$ 2.000</option>
-        </select>
-      </div>
-
-      <div id="presentesGrid" class="presentes-grid"></div>
-    </div>
-  </section>
-
-  <div id="checkoutModal" class="modal hidden" role="dialog" aria-modal="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Presentear os Noivos 💖</h3>
-        <button id="closeModal" class="modal-close" aria-label="Fechar">×</button>
-      </div>
-      <div class="modal-body">
-        <div id="presentInfo" class="present-info"></div>
-
-        <div class="form-group">
-          <label class="form-label" for="shareQty">Quantidade de cotas</label>
-          <input type="number" id="shareQty" class="form-control" min="1" value="1">
-          <small id="sharesRemaining" class="help-text"></small>
+      <div class="dashboard-row mb-48">
+        <div class="dashboard-col card">
+          <div class="card__body">
+            <h3>Total Arrecadado</h3>
+            <p class="stat-number" id="totalArrecadado">R$ 0,00</p>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label class="form-label">Total</label>
-          <div id="checkoutTotal" class="price">R$ 0,00</div>
+        <div class="dashboard-col card">
+          <div class="card__body">
+            <h3>Itens Presenteados</h3>
+            <p class="stat-number" id="presentesComprados">0</p>
+          </div>
         </div>
-
-        <form id="checkoutForm">
-          <div class="form-group">
-            <label class="form-label" for="buyerName">Nome Completo *</label>
-            <input id="buyerName" class="form-control" type="text" placeholder="Seu nome" required />
+        <div class="dashboard-col card">
+          <div class="card__body">
+            <h3>Convidados Confirmados</h3>
+            <p class="stat-number" id="totalConvidados">0</p>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="buyerEmail">E-mail *</label>
-            <input id="buyerEmail" class="form-control" type="email" placeholder="seu@email.com" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="buyerPhone">Telefone</label>
-            <input id="buyerPhone" class="form-control" type="tel" placeholder="(DDD) 90000-0000" />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="buyerMessage">Mensagem para os Noivos</label>
-            <textarea id="buyerMessage" class="form-control" rows="3" placeholder="Deixe um recadinho opcional…"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" id="cancelCheckout" class="btn btn--secondary">Cancelar</button>
-            <button type="submit" class="btn btn--primary">Confirmar Presente 💝</button>
-          </div>
-          <small class="help-text">• Integração com pagamento (PIX/Cartão) pode ser adicionada nesta etapa.</small>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="loginModal" class="modal hidden" role="dialog" aria-modal="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Área dos Noivos 👑</h3>
-        <button id="closeLoginModal" class="modal-close" aria-label="Fechar">×</button>
-      </div>
-      <div class="modal-body">
-        <form id="loginForm">
-          <div class="form-group">
-            <label class="form-label" for="passwordInput">Senha de Acesso</label>
-            <input id="passwordInput" class="form-control" type="password" placeholder="Digite a senha" />
-          </div>
-          <div class="form-actions">
-            <button type="button" id="cancelLogin" class="btn btn--secondary">Cancelar</button>
-            <button type="submit" class="btn btn--primary">Entrar</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <div id="successModal" class="modal hidden" role="alertdialog" aria-modal="true">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>🎉 Presente Confirmado!</h3>
-        <button id="closeSuccessModal" class="modal-close" aria-label="Fechar">×</button>
-      </div>
-      <div class="modal-body text-center">
-        <div class="success-icon">💖</div>
-        <p>Obrigado por presentear Guilherme &amp; Lara! Seu presente foi registrado com sucesso.</p>
-      </div>
-    </div>
-  </div>
-
-  <section id="dashboard" class="dashboard hidden">
-    <div class="dashboard-header">
-      <div class="container dashboard-nav">
-        <h2>Dashboard — Guilherme &amp; Lara</h2>
-        <button id="logoutBtn" class="btn btn--outline">Sair</button>
-      </div>
-    </div>
-    <div class="container dashboard-content">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-info"><h3 id="totalArrecadado">R$ 0</h3><p>Total Arrecadado</p></div></div>
-        <div class="stat-card"><div class="stat-icon">🎁</div><div class="stat-info"><h3 id="presentesComprados">0</h3><p>Presentes Comprados</p></div></div>
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-info"><h3 id="totalConvidados">0</h3><p>Convidados Contribuíram</p></div></div>
-        <div class="stat-card"><div class="stat-icon">📈</div><div class="stat-info"><h3 id="percentualMeta">0%</h3><p>da Meta Alcançada</p></div></div>
-      </div>
-
-      <div class="progress-section-dashboard">
-        <div class="progress-header">
-          <span>Arrecadado</span>
-          <span id="progressTextDashboard">R$ 0 de R$ 0</span>
         </div>
-        <div class="progress-bar"><div id="progressFillDashboard" class="progress-fill"></div></div>
-        <div id="progressPercentageDashboard" class="progress-percentage">0%</div>
-
-        <div class="meta-section">
-          <div class="meta-edit">
-            <label class="form-label" for="metaInput">Meta de Arrecadação</label>
-            <div class="meta-input-group">
-              <input id="metaInput" class="form-control" type="number" step="0.01" min="0" value="30000" />
-              <button id="saveMeta" class="btn btn--primary">Salvar Meta</button>
+        <div class="dashboard-col card">
+          <div class="card__body">
+            <h3>Meta Alcançada</h3>
+            <p class="stat-number" id="percentualMeta">0%</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="dashboard-row mb-48">
+        <div class="card full-width">
+          <div class="card__body">
+            <h3 class="mb-16">Progresso da Meta</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFillDashboard"></div>
+              <span class="progress-text" id="progressTextDashboard">R$ 0,00 de R$ 30.000,00</span>
+              <span class="progress-percentage" id="progressPercentageDashboard">0%</span>
+            </div>
+            <div class="form-group mt-24">
+              <label class="form-label" for="metaInput">Meta de Arrecadação</label>
+              <div class="meta-input-group">
+                <input id="metaInput" class="form-control" type="number" step="0.01" min="0" value="30000" />
+                <button id="saveMeta" class="btn btn--primary">Salvar Meta</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="dashboard-row mb-48">
+        <div class="dashboard-col card full-width">
+          <div class="card__body">
+            <h3 class="mb-24">Lista de Convidados Confirmados (RSVP) 👫</h3>
+            <div id="rsvpList" class="rsvp-list"></div>
+          </div>
+        </div>
+      </div>
       <div class="dashboard-row">
         <div class="dashboard-col card">
           <div class="card__body">
@@ -253,7 +76,7 @@
       </div>
 
       <div class="dashboard-row">
-        <div class="dashboard-col card">
+        <div class="dashboard-col card full-width">
           <div class="card__body">
             <h3 class="mb-24">Mensagens dos Convidados 💌</h3>
             <div id="messagesList" class="messages-list"></div>
@@ -262,15 +85,3 @@
       </div>
     </div>
   </section>
-
-  <footer class="footer">
-    <div class="container footer-content">
-      <p>© 2025 Lista de Casamento — Guilherme &amp; Lara</p>
-      <p>Feito com muito amor e carinho</p>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
