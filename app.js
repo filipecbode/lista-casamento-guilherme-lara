@@ -42,7 +42,8 @@ const APP_DATA = {
     {"id":31, "nome":"Upgrade de hospedagem (lua de mel)", "preco":800, "cotas":1, "compradas":0, "categoria":"Viagem & Hospedagem", "imagem":"assets/gifts/31.jpg"}
   ],
   transacoes: [],
-  mensagens: []
+  mensagens: [],
+  rsvps: [] // Novo array para guardar a lista de convidados
 };
 
 // Estado/Elementos
@@ -103,12 +104,17 @@ const elements = {
   rsvpMessage: document.getElementById('rsvpMessage'),
   guestName: document.getElementById('guestName'),
   guestCount: document.getElementById('guestCount'),
-  guestMessage: document.getElementById('guestMessage')
+  guestMessage: document.getElementById('guestMessage'),
+  rsvpList: document.getElementById('rsvpList') // Novo elemento da lista
 };
 
 // Utils
 const formatCurrency = (value) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(value || 0);
-const formatDate = (date) => new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(date));
+// Ajustado para formatar data/hora corretamente para visualização
+const formatDate = (date) => {
+    const d = date instanceof Date ? date : (date ? new Date(date) : new Date());
+    return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(d);
+};
 const categoryEmojis = {
   'Gastronomia & Bebidas': '🍽️', 'Experiências a Dois': '💞', 'Viagem & Hospedagem': '✈️',
   'Cuidados & Bem-estar': '💆', 'Preparativos dos Noivos': '💍', 'Transporte & Logística': '⛽', 'Extras & Lembrancinhas': '🎁'
@@ -187,7 +193,6 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
     e.preventDefault(); 
     if(!currentPresent) return;
 
-    // Lógica de simulação da compra (mantida para o dashboard local)
     const rem=getRemaining(currentPresent); 
     const qty=Math.min(Math.max(parseInt(elements.shareQty?.value||'1',10),1),rem);
     const nome=elements.buyerName?.value; 
@@ -196,10 +201,6 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
     const mensagem=elements.buyerMessage?.value || 'Sem mensagem.';
     const valorTotal = currentPresent.preco * qty;
     
-    currentPresent.compradas=(currentPresent.compradas||0)+qty;
-    APP_DATA.transacoes.push({id:Date.now(),presenteId:currentPresent.id,presenteNome:currentPresent.nome,valor:valorTotal,quantidade:qty,comprador:nome,email,telefone,data:new Date().toISOString()});
-    if((mensagem||'').trim()) APP_DATA.mensagens.push({id:Date.now()+1,nome, mensagem, data:new Date().toISOString()});
-
     // --- LÓGICA DE ENVIO DA TRANSAÇÃO PARA O GOOGLE SHEETS ---
     const transactionFormData = new FormData();
     transactionFormData.append('type', 'transaction'); 
@@ -217,6 +218,20 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
             body: transactionFormData,
             mode: 'no-cors' 
         });
+        
+        // Simulação LOCAL para o dashboard até o próximo login (melhoria futura seria recarregar)
+        currentPresent.compradas=(currentPresent.compradas||0)+qty;
+        APP_DATA.transacoes.push({
+            data: new Date().toISOString(), 
+            presenteNome: currentPresent.nome,
+            valorTotal: valorTotal,
+            quantidade: qty,
+            nomeComprador: nome,
+            email: email,
+            mensagem: mensagem
+        });
+        if((mensagem||'').trim()) APP_DATA.mensagens.push({nome: nome, mensagem: mensagem, data: new Date().toISOString()});
+        
         console.log('Transação enviada com sucesso para o Google Sheets.');
     } catch (error) {
         console.error('Erro ao enviar transação para o Google Sheets:', error);
@@ -228,6 +243,7 @@ elements.checkoutForm?.addEventListener('submit', async (e) => {
     elements.checkoutForm?.reset(); 
     currentPresent=null; 
     renderPresentes();
+    if (isLoggedIn) updateDashboard(); // Atualiza o dashboard se o noivo estiver logado
 });
 
 
@@ -265,6 +281,10 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
             mode: 'no-cors' // Necessário para a comunicação simples
         });
 
+        // Simulação LOCAL do RSVP
+        APP_DATA.rsvps.push({ nome: name, contagem: count, mensagem: message, data: new Date().toISOString() });
+        if (isLoggedIn) updateDashboard(); // Atualiza o dashboard se o noivo estiver logado
+
         elements.rsvpMessage.textContent = '✅ Presença confirmada com sucesso! Obrigado!';
         elements.rsvpMessage.className = 'help-text text-center rsvp-success';
         elements.rsvpForm.reset();
@@ -282,7 +302,18 @@ elements.rsvpForm?.addEventListener('submit', async (e) => {
 
 // Login/Logout
 elements.loginBtn?.addEventListener('click',(e)=>{ e.preventDefault(); elements.loginModal?.classList.remove('hidden'); });
-document.getElementById('loginForm')?.addEventListener('submit',(e)=>{ e.preventDefault(); const pwd=elements.passwordInput?.value||''; if(pwd===APP_DATA.noivos.senha){ isLoggedIn=true; elements.loginModal?.classList.add('hidden'); showDashboard(); } else { alert('Senha incorreta!'); } elements.passwordInput.value=''; });
+document.getElementById('loginForm')?.addEventListener('submit', async (e)=>{ 
+    e.preventDefault(); 
+    const pwd=elements.passwordInput?.value||''; 
+    if(pwd===APP_DATA.noivos.senha){ 
+        isLoggedIn=true; 
+        elements.loginModal?.classList.add('hidden'); 
+        await showDashboard(); // Chamada agora é async para carregar dados
+    } else { 
+        alert('Senha incorreta!'); 
+    } 
+    elements.passwordInput.value=''; 
+});
 elements.logoutBtn?.addEventListener('click',()=>{ isLoggedIn=false; hideDashboard(); });
 
 // Funções do Dashboard
@@ -292,26 +323,55 @@ async function showDashboard(){
   document.querySelector('.presentes')?.style.setProperty('display','none'); 
   elements.dashboard?.classList.remove('hidden'); 
   
-  // Carregar meta antes de atualizar o dashboard
-  await loadMetaFromScript(); 
+  // NOVA FUNÇÃO: Carregar todos os dados antes de atualizar o dashboard
+  await loadAllDataFromScript(); 
   updateDashboard(); 
 }
 
 function hideDashboard(){ elements.dashboard?.classList.add('hidden'); document.querySelector('.hero')?.style.removeProperty('display'); document.querySelector('.historia')?.style.removeProperty('display'); document.querySelector('.presentes')?.style.removeProperty('display'); }
 
-// Carrega a Meta do Google Sheets
-async function loadMetaFromScript() {
+// NOVO: Carrega TODOS os dados do Google Sheets (Meta, Transações, RSVPs)
+async function loadAllDataFromScript() {
     try {
-        // Envia um GET para o Script (doGet)
         const response = await fetch(SCRIPT_URL); 
         const data = await response.json();
         
         if (data && data.meta > 0) {
             APP_DATA.noivos.meta = data.meta;
-            console.log(`Meta carregada do Sheets: ${formatCurrency(data.meta)}`);
         }
+
+        if (data && Array.isArray(data.transacoes)) {
+            APP_DATA.transacoes = data.transacoes.map(t => ({
+                id: Date.parse(t.data) || Date.now(),
+                presenteNome: t.presenteNome,
+                valor: t.valorTotal,
+                quantidade: t.quantidade,
+                comprador: t.nomeComprador,
+                email: t.email,
+                telefone: t.telefone,
+                data: t.data,
+            }));
+             // Atualiza a lista de mensagens filtrando as transações com mensagem
+            APP_DATA.mensagens = data.transacoes
+                .filter(t => (t.mensagem || '').trim() !== 'Sem mensagem.')
+                .map(t => ({ nome: t.nomeComprador, mensagem: t.mensagem, data: t.data }));
+        }
+        
+        if (data && Array.isArray(data.rsvps)) {
+            APP_DATA.rsvps = data.rsvps;
+        }
+
+        // Atualiza a contagem de cotas compradas nos presentes (localmente)
+        APP_DATA.presentes.forEach(p => p.compradas = 0); // Zera
+        APP_DATA.transacoes.forEach(t => {
+            const presente = APP_DATA.presentes.find(p => p.nome === t.presenteNome);
+            if (presente) {
+                presente.compradas += t.quantidade;
+            }
+        });
+        
     } catch (error) {
-        console.warn('Não foi possível carregar a meta do Google Sheets. Usando valor local.', error);
+        console.warn('Não foi possível carregar os dados completos do Google Sheets.', error);
     }
 }
 
@@ -319,20 +379,17 @@ async function loadMetaFromScript() {
 document.getElementById('saveMeta')?.addEventListener('click', async ()=>{ 
   const v=parseFloat(elements.metaInput?.value); 
   if(v&&v>0){ 
-    
-    // Envia o novo valor para o Script
     const metaFormData = new FormData();
     metaFormData.append('type', 'meta_update');
     metaFormData.append('NovoValor', v);
     
     try {
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST', // Usamos POST para enviar a atualização
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
         body: metaFormData,
         mode: 'no-cors'
       });
       
-      // Assume-se sucesso (devido ao modo 'no-cors')
       APP_DATA.noivos.meta=v;
       updateDashboard(); 
       alert('Meta atualizada com sucesso e salva no Google Sheets!'); 
@@ -347,17 +404,89 @@ document.getElementById('saveMeta')?.addEventListener('click', async ()=>{
   } 
 });
 
-function updateDashboard(){ const total=APP_DATA.transacoes.reduce((s,t)=>s+t.valor,0); const qtd=APP_DATA.transacoes.length; const conv=new Set(APP_DATA.transacoes.map(t=>t.email)).size; const pct=((total/APP_DATA.noivos.meta)*100)||0;
-  document.getElementById('metaInput').value=APP_DATA.noivos.meta; document.getElementById('totalArrecadado').textContent=formatCurrency(total); document.getElementById('presentesComprados').textContent=qtd; document.getElementById('totalConvidados').textContent=conv; document.getElementById('percentualMeta').textContent=`${pct.toFixed(1)}%`;
-  updateDashboardProgress(); updateTransactionsList(); updateMessagesList(); updateCategoryChart(); }
+function updateDashboard(){ 
+    const totalArrecadado = APP_DATA.transacoes.reduce((s,t)=>s+t.valor,0); 
+    const totalPresentesComprados = APP_DATA.transacoes.length; 
+    const totalConvidadosRSVP = APP_DATA.rsvps.reduce((total, r) => total + r.contagem, 0); 
+    const percentualMeta = ((totalArrecadado / APP_DATA.noivos.meta) * 100) || 0;
 
-function updateDashboardProgress(){ const total=APP_DATA.transacoes.reduce((s,t)=>s+t.valor,0); const pct=(total/APP_DATA.noivos.meta)*100; elements.progressFillDashboard.style.width=`${Math.min(pct,100)}%`; elements.progressTextDashboard.textContent=`${formatCurrency(total)} de ${formatCurrency(APP_DATA.noivos.meta)}`; elements.progressPercentageDashboard.textContent=`${(pct||0).toFixed(1)}%`; }
+    elements.metaInput.value = APP_DATA.noivos.meta; 
+    elements.totalArrecadado.textContent = formatCurrency(totalArrecadado); 
+    elements.presentesComprados.textContent = totalPresentesComprados; 
+    elements.totalConvidados.textContent = totalConvidadosRSVP;
+    elements.percentualMeta.textContent = `${percentualMeta.toFixed(1)}%`;
 
-function updateTransactionsList(){ if(!elements.transactionsList) return; if(APP_DATA.transacoes.length===0){ elements.transactionsList.innerHTML='<p class="no-transactions">Nenhuma transação ainda</p>'; return; } const sorted=[...APP_DATA.transacoes].sort((a,b)=> new Date(b.data)-new Date(a.data)); elements.transactionsList.innerHTML=sorted.map(t=>`<div class="transaction-item"><div class="transaction-info"><h5>${t.presenteNome} ${t.quantidade?`• ${t.quantidade} cota(s)`:''}</h5><p>${t.comprador} • ${formatDate(t.data)}</p></div><div class="transaction-amount">${formatCurrency(t.valor)}</div></div>`).join(''); }
+    updateDashboardProgress(totalArrecadado, APP_DATA.noivos.meta); 
+    updateTransactionsList(); 
+    updateMessagesList(); 
+    updateRsvpList(); // Novo
+    updateCategoryChart();
+    renderPresentes(); // Atualiza a lista de presentes (cotas) na tela principal
+}
 
-function updateMessagesList(){ if(!elements.messagesList) return; if(APP_DATA.mensagens.length===0){ elements.messagesList.innerHTML='<p class="no-messages">Nenhuma mensagem ainda</p>'; return; } const sorted=[...APP_DATA.mensagens].sort((a,b)=> new Date(b.data)-new Date(a.data)); elements.messagesList.innerHTML=sorted.map(m=>`<div class="message-item"><div class="message-header"><span class="message-name">${m.nome}</span><span class="message-date">${formatDate(m.data)}</span></div><div class="message-text">${m.mensagem}</div></div>`).join(''); }
+function updateDashboardProgress(total, meta){ 
+    const pct=(total/meta)*100; 
+    elements.progressFillDashboard.style.width=`${Math.min(pct,100)}%`; 
+    elements.progressTextDashboard.textContent=`${formatCurrency(total)} de ${formatCurrency(meta)}`; 
+    elements.progressPercentageDashboard.textContent=`${(pct||0).toFixed(1)}%`; 
+}
 
-function updateCategoryChart(){ if(!elements.categoryChart) return; const ctx=elements.categoryChart.getContext('2d'); const cat={}; const colors=['#1FB8CD','#FFC185','#B4413C','#ECEBD5','#5D878F','#E91E63','#8E24AA']; APP_DATA.transacoes.forEach(t=>{ const p=APP_DATA.presentes.find(x=>x.id===t.presenteId); if(p) cat[p.categoria]=(cat[p.categoria]||0)+t.valor; }); const labels=Object.keys(cat); const data=Object.values(cat); if(categoryChart) categoryChart.destroy(); if(labels.length===0){ categoryChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nenhum dado'],datasets:[{data:[1],backgroundColor:['#f0f0f0'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}); return;} categoryChart=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,font:{size:12}}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${formatCurrency(ctx.raw)}`}}}}}); }
+function updateTransactionsList(){ 
+    if(!elements.transactionsList) return; 
+    if(APP_DATA.transacoes.length===0){ 
+        elements.transactionsList.innerHTML='<p class="no-transactions">Nenhuma transação ainda</p>'; 
+        return; 
+    } 
+    const sorted=[...APP_DATA.transacoes].sort((a,b)=> new Date(b.data)-new Date(a.data)); 
+    elements.transactionsList.innerHTML=sorted.map(t=>`<div class="transaction-item"><div class="transaction-info"><h5>${t.presenteNome} • ${t.quantidade?`${t.quantidade} cota(s)`:''}</h5><p>${t.comprador} • ${formatDate(t.data)}</p></div><div class="transaction-amount">${formatCurrency(t.valor)}</div></div>`).join(''); 
+}
+
+function updateMessagesList(){ 
+    if(!elements.messagesList) return; 
+    if(APP_DATA.mensagens.length===0){ 
+        elements.messagesList.innerHTML='<p class="no-messages">Nenhuma mensagem ainda</p>'; 
+        return; 
+    } 
+    const sorted=[...APP_DATA.mensagens].sort((a,b)=> new Date(b.data)-new Date(a.data)); 
+    elements.messagesList.innerHTML=sorted.map(m=>`<div class="message-item"><div class="message-header"><span class="message-name">${m.nome}</span><span class="message-date">${formatDate(m.data)}</span></div><div class="message-text">${m.mensagem}</div></div>`).join(''); 
+}
+
+function updateRsvpList(){
+    if(!elements.rsvpList) return;
+    if(APP_DATA.rsvps.length===0){
+        elements.rsvpList.innerHTML='<p class="no-rsvps">Nenhuma confirmação de presença ainda.</p>';
+        return;
+    }
+    const sorted=[...APP_DATA.rsvps].sort((a,b)=> new Date(b.data)-new Date(a.data));
+    elements.rsvpList.innerHTML=sorted.map(r=>`
+        <div class="rsvp-item">
+            <div class="rsvp-info">
+                <p class="rsvp-name"><strong>${r.nome}</strong> (${r.contagem} pessoa${r.contagem > 1 ? 's' : ''})</p>
+                <p class="rsvp-date">${formatDate(r.data)}</p>
+            </div>
+            ${r.mensagem && r.mensagem !== 'Sem mensagem.' ? `<div class="rsvp-message">${r.mensagem}</div>` : ''}
+        </div>
+    `).join('');
+}
+
+
+function updateCategoryChart(){ 
+    if(!elements.categoryChart) return; 
+    const ctx=elements.categoryChart.getContext('2d'); 
+    const cat={}; 
+    const colors=['#1FB8CD','#FFC185','#B4413C','#ECEBD5','#5D878F','#E91E63','#8E24AA']; 
+    APP_DATA.transacoes.forEach(t=>{ 
+        const p=APP_DATA.presentes.find(x=>x.nome === t.presenteNome); // Busca por nome, não por ID
+        if(p) cat[p.categoria]=(cat[p.categoria]||0)+t.valor; 
+    }); 
+    const labels=Object.keys(cat); 
+    const data=Object.values(cat); 
+    if(categoryChart) categoryChart.destroy(); 
+    if(labels.length===0){ 
+        categoryChart=new Chart(ctx,{type:'doughnut',data:{labels:['Nenhum dado'],datasets:[{data:[1],backgroundColor:['#f0f0f0'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}}); return;
+    } 
+    categoryChart=new Chart(ctx,{type:'doughnut',data:{labels,datasets:[{data,backgroundColor:colors.slice(0,labels.length),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:16,usePointStyle:true,font:{size:12}}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${formatCurrency(ctx.raw)}`}}}}}); 
+}
 
 window.addEventListener('click',(e)=>{ 
   if(e.target===elements.checkoutModal){ elements.checkoutModal.classList.add('hidden'); currentPresent=null; } 
@@ -369,7 +498,6 @@ function init(){
   updateCountdown(); 
   setInterval(updateCountdown,1000); 
   renderPresentes(); 
-  loadMetaFromScript(); // Adiciona o carregamento da meta na inicialização
 }
 
 if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', init); else init();
